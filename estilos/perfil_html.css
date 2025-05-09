@@ -58,7 +58,12 @@ body {
     border-color: #000000;
     color: #400040;
 }
-
+ .texto-auxiliar {
+            font-size: 1em;
+            color: #666;
+            margin-top: -15px;
+            margin-bottom: 12px;
+        }
 /* Responsividade */
 @media only screen and (max-width: 600px) {
     #container_formulario {
