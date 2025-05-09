@@ -124,7 +124,8 @@
 
         let currentGoogleUserId = null;
         window.decodedUserToken = null;
-
+        let logoFile = null;
+        let backgroundFile = null;
         // --- Elementos DOM (Cabeçalho) ---
         const userInfoDiv = document.getElementById('userInfo');
         const userNameSpan = document.getElementById('userName');
@@ -238,68 +239,46 @@
          * @param {HTMLImageElement} previewElement O elemento img para mostrar a pré-visualização.
          * @param {string} type Tipo de imagem ('logo' ou 'background') para feedback.
          */
-        function setupImageUpload(areaElement, previewElement, type) {
-            if (!areaElement || !previewElement) {
-                console.error(`Elementos de upload para ${type} não encontrados.`);
+     function setupImageUpload(areaElement, previewElement, type) {
+        if (!areaElement || !previewElement) return;
+
+        const processFile = (file) => {
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecione um arquivo de imagem.');
                 return;
             }
 
-            const processFile = async (file) => {
-                if (!file.type.startsWith('image/')) {
-                    alert('Por favor, selecione um arquivo de imagem.');
-                    return;
-                }
-
-                // Mostrar preview local imediatamente
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewElement.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-
-                // Tentar upload para ImgBB
-                previewElement.dataset.uploading = "true"; // Sinaliza que está processando
-                const imgbbUrl = await uploadToImgBB(file, IMG_BB_API_KEY);
-                delete previewElement.dataset.uploading;
-
-                if (imgbbUrl) {
-                    previewElement.dataset.imgbbUrl = imgbbUrl; // Armazena a URL do ImgBB
-                    previewElement.src = imgbbUrl; // Atualiza o preview com a URL externa, se desejar
-                    if (statusMessageStoreDiv) statusMessageStoreDiv.textContent = `Imagem de ${type} enviada e URL armazenada!`;
-                } else {
-                    // Falha no upload, mantém o data URL local como fallback para salvar
-                    previewElement.dataset.imgbbUrl = previewElement.src; // Usa o data URL local
-                    if (statusMessageStoreDiv) statusMessageStoreDiv.textContent = `Falha no upload da imagem de ${type}. Usando imagem local temporariamente.`;
-                }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewElement.src = e.target.result;
+                // Armazena o arquivo para upload posterior
+                if (type === 'logo') logoFile = file;
+                else backgroundFile = file;
             };
+            reader.readAsDataURL(file);
 
-            areaElement.addEventListener('click', () => {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = (e) => {
-                    if (e.target.files && e.target.files[0]) {
-                        processFile(e.target.files[0]);
-                    }
-                };
-                input.click();
-            });
-
-            areaElement.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                areaElement.style.borderColor = '#A2BF3F';
-            });
-            areaElement.addEventListener('dragleave', (e) => {
-                areaElement.style.borderColor = '#ccc';
-            });
-            areaElement.addEventListener('drop', (e) => {
-                e.preventDefault();
-                areaElement.style.borderColor = '#ccc';
-                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                    processFile(e.dataTransfer.files[0]);
-                }
-            });
-        }
+            statusMessageStoreDiv.textContent = `Imagem ${type} selecionada. Clique em Salvar para enviar.`;
+        };
+         
+           // Eventos de Clique
+        areaElement.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                if (e.target.files[0]) processFile(e.target.files[0]);
+            };
+            input.click();
+        });
+         
+            // Eventos de Drag and Drop
+        areaElement.addEventListener('dragover', (e) => e.preventDefault());
+        areaElement.addEventListener('dragleave', () => areaElement.style.borderColor = '#ccc');
+        areaElement.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+        });
+    }
 
 
         /**
@@ -357,68 +336,70 @@
         /**
          * Salva os dados da loja no Google Sheet.
          */
-        async function handleSaveStoreData() {
-            if (!currentGoogleUserId) {
-                alert('Sessão inválida. Faça login novamente.');
-                return;
+   // --- Função de Salvamento Modificada ---
+    async function handleSaveStoreData() {
+        if (!currentGoogleUserId) {
+            alert('Sessão inválida. Faça login novamente.');
+            return;
+        }
+        if (!storeNameInput.value.trim() || !storeCepInput.value.trim()) {
+            alert('Nome da loja e CEP são obrigatórios!');
+            return;
+        }
+
+        let logoUrlToSave = logoPreviewImg.dataset.imgbbUrl || '';
+        let backgroundUrlToSave = backgroundPreviewImg.dataset.imgbbUrl || '';
+
+        try {
+            // Upload do Logo (se houver novo arquivo)
+            if (logoFile) {
+                statusMessageStoreDiv.textContent = "Enviando logo...";
+                logoUrlToSave = await uploadToImgBB(logoFile, IMG_BB_API_KEY);
+                logoPreviewImg.dataset.imgbbUrl = logoUrlToSave;
+                logoFile = null; // Limpa após upload
             }
-            if (!storeNameInput.value.trim() || !storeCepInput.value.trim()) {
-                alert('Nome da loja e CEP são obrigatórios!');
-                return;
+
+            // Upload do Background (se houver novo arquivo)
+            if (backgroundFile) {
+                statusMessageStoreDiv.textContent = "Enviando background...";
+                backgroundUrlToSave = await uploadToImgBB(backgroundFile, IMG_BB_API_KEY);
+                backgroundPreviewImg.dataset.imgbbUrl = backgroundUrlToSave;
+                backgroundFile = null; // Limpa após upload
             }
 
-            // Prioriza URL do ImgBB, se disponível. Senão, usa o src (que pode ser data URL).
-            const logoUrlToSave = logoPreviewImg.dataset.imgbbUrl || logoPreviewImg.src;
-            const backgroundUrlToSave = backgroundPreviewImg.dataset.imgbbUrl || backgroundPreviewImg.src;
-
-            // Verifica se as URLs são placeholders antes de salvar
-            const defaultLogoSrc = 'rc_images/drop_here.png';
-            const defaultBgSrc = 'rc_images/drop_here.png';
-
-            const finalLogoUrl = (logoUrlToSave && !logoUrlToSave.endsWith(defaultLogoSrc)) ? logoUrlToSave : '';
-            const finalBackgroundUrl = (backgroundUrlToSave && !backgroundUrlToSave.endsWith(defaultBgSrc)) ? backgroundUrlToSave : '';
-
-
+            // Prepara dados para salvar
             const storeData = {
                 action: 'saveStore',
                 userId: currentGoogleUserId,
                 userEmail: window.decodedUserToken?.email || '',
                 storeName: storeNameInput.value.trim(),
                 storeCep: storeCepInput.value.trim(),
-                logoUrl: finalLogoUrl,
-                backgroundUrl: finalBackgroundUrl
+                logoUrl: logoUrlToSave,
+                backgroundUrl: backgroundUrlToSave
             };
 
-            console.log("Enviando dados da loja para Google Sheet:", storeData);
-            if (statusSaveDiv) statusSaveDiv.textContent = 'Salvando...';
+            // Envia para Google Sheet
+            statusSaveDiv.textContent = 'Salvando...';
             saveStoreButton.disabled = true;
+            
+            const response = await fetch(STORE_DATA_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(storeData)
+            });
 
-            try {
-                const response = await fetch(STORE_DATA_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Google Apps Script Web Apps geralmente requerem 'no-cors' para POST simples
-                                     // ou precisam de tratamento de CORS e resposta JSON adequada no script.
-                    cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' }, // Mesmo com no-cors, o Apps Script pode ler via e.postData.contents
-                    body: JSON.stringify(storeData)
-                });
-                // Com 'no-cors', a resposta é opaca. Não podemos ler status ou corpo diretamente.
-                console.log('Requisição de salvamento enviada para Google Sheet.');
-                if (statusSaveDiv) statusSaveDiv.textContent = 'Dados da loja salvos com sucesso!';
-                alert('Dados da loja salvos!');
-                if (welcomeLabelStore && storeData.storeName) {
-                     welcomeLabelStore.innerHTML = `Editando sua loja: <span style="color:#A2BF3F;">${storeData.storeName}</span>`;
-                }
+            statusSaveDiv.textContent = 'Dados salvos com sucesso!';
+            alert('Loja atualizada!');
+            loadStoreData(); // Recarrega dados atualizados
 
-            } catch (error) {
-                console.error('Erro ao salvar dados na planilha:', error);
-                if (statusSaveDiv) statusSaveDiv.textContent = `Erro ao salvar: ${error.message}`;
-                alert('Falha ao enviar dados para a planilha.');
-            } finally {
-                saveStoreButton.disabled = false;
-            }
+        } catch (error) {
+            console.error('Erro ao salvar:', error);
+            statusSaveDiv.textContent = `Erro: ${error.message}`;
+            alert('Falha ao salvar dados.');
+        } finally {
+            saveStoreButton.disabled = false;
         }
-
+    }
 
         // --- Inicialização da Página ---
         window.addEventListener('load', () => {
