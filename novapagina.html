@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="estilos/cabecaio.css">
+    <style>
+        /* Mantém os mesmos estilos da index */
+        .iframe-container {
+            margin-top: 20px;
+            border: 2px solid #A2BF3F;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .iframe-content {
+            width: 100%;
+            height: 500px;
+            border: none;
+            display: none;
+        }
+        
+        .iframe-content.active {
+            display: block;
+        }
+
+        .button-container {
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="containerStyle">
+            <div class="containerPadding">
+                <!-- Apenas estado logado -->
+                <div id="userInfo">
+                    <div style="display: flex; align-items: center;">
+                        <img id="userPhoto" src="" alt="Foto" style="width:100px; height:100px; border-radius:50%; margin-right:20px;">
+                        <div>
+                            <h2 style="font-size:24pt; color:#A2BF3F;">Bem-vindo, <span id="userName"></span>!</h2>
+                            <p style="font-size:12pt; color:#FFFFFF;"><strong>Email:</strong> <span id="userEmail"></span></p>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <button id="registo" class="buttonStyle">Registro</button>
+                        <button id="conta" class="buttonStyle">Meu Perfil</button>
+                        <button id="loja" class="buttonStyle">Minha Loja</button>
+                        <button class="buttonStyle aiframe-btn" data-iframe="aiframe1">Aiframe 1</button>
+                        <button class="buttonStyle aiframe-btn" data-iframe="aiframe2">Aiframe 2</button>
+                        <button id="logoutButton" class="buttonStyle">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Iframes -->
+        <div class="iframe-container">
+            <iframe src="registo.html" class="iframe-content" id="registoFrame"></iframe>
+            <iframe src="perfil.html" class="iframe-content" id="contaFrame"></iframe>
+            <iframe src="criarloja.html" class="iframe-content" id="LojaFrame"></iframe>
+            <div class="iframe-content" id="aiframe1">
+                <h2 style="padding: 20px; color: #A2BF3F;">Aiframe 1 - Em desenvolvimento</h2>
+            </div>
+            <div class="iframe-content" id="aiframe2">
+                <h2 style="padding: 20px; color: #A2BF3F;">Aiframe 2 - Em desenvolvimento</h2>
+            </div>
+        </div>
+
+        <div id="statusMessage"></div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        // Configurações
+        const GOOGLE_APPS_SCRIPT_URL = 'SUA_URL_DO_APP_SCRIPT_AQUI';
+        const USER_DATA_KEY = 'googleUserDataToken';
+
+        // Elementos DOM
+        const userNameSpan = document.getElementById('userName');
+        const userEmailSpan = document.getElementById('userEmail');
+        const userPhotoImg = document.getElementById('userPhoto');
+        const statusMessageDiv = document.getElementById('statusMessage');
+
+        // Função de decodificação JWT
+        function jwtDecode(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Verificação de login
+        async function checkAuth() {
+            const token = localStorage.getItem(USER_DATA_KEY);
+            
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Verificação no servidor
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ id_token: token })
+                });
+
+                if (!response.ok) throw new Error('Falha na verificação');
+                
+                // Atualiza UI
+                const payload = jwtDecode(token);
+                if (payload) {
+                    userNameSpan.textContent = payload.name;
+                    userEmailSpan.textContent = payload.email;
+                    userPhotoImg.src = payload.picture;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                localStorage.removeItem(USER_DATA_KEY);
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Logout
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem(USER_DATA_KEY);
+            window.location.href = 'index.html';
+        });
+
+        // Inicialização
+        window.addEventListener('load', checkAuth);
+    </script>
+</body>
+</html>
