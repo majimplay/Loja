@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Formulário de Perfil</title>
     <link rel="stylesheet" type="text/css" href="estilos/perfil_html.css">
+    <style>
+        .texto-auxiliar {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
 <body>
     <div id="statusMessage" style="text-align: center; margin: 20px 0; color: green;"></div>
@@ -13,16 +21,23 @@
             <!-- Dados Pessoais -->
             <div class="grupo_campos">
                 <input type="text" class="input-style" id="input_cpf" placeholder="CPF">
+                <div class="texto-auxiliar">Apenas números, 11 dígitos</div>
                 <input type="text" class="input-style" id="input_cep" placeholder="CEP">
+                <div class="texto-auxiliar">Digite o CEP para autocompletar</div>
                 <input type="text" class="input-style" id="input_cidade" placeholder="Cidade">
+                <div class="texto-auxiliar">Nome completo da cidade</div>
                 <input type="text" class="input-style" id="input_bairro" placeholder="Bairro">
+                <div class="texto-auxiliar">Nome do seu bairro</div>
             </div>
 
             <!-- Contato e Endereço -->
             <div class="grupo_campos">
                 <input type="text" class="input-style" id="input_telefone" placeholder="Telefone">
+                <div class="texto-auxiliar">Com DDD, ex: 11987654321</div>
                 <input type="text" class="input-style" id="input_logradouro" placeholder="Logradouro">
+                 <div class="texto-auxiliar">Nome da rua/avenida</div>
                 <input type="text" class="input-style" id="input_estado" placeholder="Estado">
+                <div class="texto-auxiliar">Sigla (ex: SP, RJ)</div>
             </div>
 
             <!-- Botão de Envio -->
