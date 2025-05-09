@@ -75,7 +75,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
         // Configurações
-        const GOOGLE_APPS_SCRIPT_URL = 'SUA_URL_DO_APP_SCRIPT_AQUI';
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCIRbVqnxxhruGC-7yZjasWpHYlIqlo9z5U2RCpv4-qz6VF7I8XRqO7hqjPkXMDuNA/exec';
         const USER_DATA_KEY = 'googleUserDataToken';
 
         // Elementos DOM
@@ -102,7 +102,8 @@
             const token = localStorage.getItem(USER_DATA_KEY);
             
             if (!token) {
-                window.location.href = 'index.html';
+                  console.log('token nao encontrado');
+               // window.location.href = 'index.html';
                 return;
             }
 
@@ -126,7 +127,8 @@
             } catch (error) {
                 console.error('Erro:', error);
                 localStorage.removeItem(USER_DATA_KEY);
-                window.location.href = 'index.html';
+                 console.log('erro');
+               // window.location.href = 'index.html';
             }
         }
 
