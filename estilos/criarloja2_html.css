@@ -1,0 +1,23 @@
+        a { color:#5D5D9E; }
+        a:visited { color:#5D5D9E; }
+        a:active { color:#5C615E; }
+        a:hover { color:#B2B3B4; }
+        body { background-color:#FFFFFF; padding:0; margin: 0; font-family: sans-serif; }
+        .textstyle1 { text-align:left; }
+        #main_container { vertical-align: top; position:relative; display: inline-block; width:100%; min-height:762px; background-color:#00FFFF; margin: 0 auto; }
+        #main_container_padding { margin: 10px; display: block; }
+        .textstyle2 { text-align:center; }
+        .textstyle3 { font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000; }
+        #welcome_label_store { font-size: 1.5em; margin-bottom: 20px; text-align:center; }
+        #input_fields_container { vertical-align: top; position:relative; display: inline-block; width:100%; min-height:118px; background:none; }
+        #input_fields_container_padding { margin: 10px; display: block; }
+        #store_name_input, #store_cep_input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 10px; width: calc(100% - 22px); box-sizing: border-box; font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000; }
+        #save_button { background-color: #A2BF3F; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 5px; transition: background-color 0.3s ease; }
+        #save_button:hover { background-color: #8aab30; }
+        #orders_button, #products_button { background-color: #A2BF3F; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 5px; transition: background-color 0.3s ease; }
+        #orders_button:hover, #products_button:hover { background-color: #8aab30; }
+        .upload-area { border: 2px dashed #ccc; padding: 10px; text-align: center; cursor: pointer; background-color: #f9f9f9; margin-bottom: 15px; }
+        .upload-area img { max-width: 100%; max-height: 300px; display: block; margin: 10px auto; }
+        .upload-area:hover { border-color: #A2BF3F; background-color: #f0f0f0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .texto-auxiliar-criarloja { font-size: 0.9em; color: #666; margin-bottom: 15px; }
