@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Logado</title>
+    <link rel="stylesheet" href="estilos/cabecaio.css">
+    <link rel="stylesheet" type="text/css" href="estilos/perfil_html.css">
+    <style>
+        /* Estilos adicionais ou ajustes podem ser colocados aqui se necessário */
+        .content-area {
+            padding: 20px;
+            text-align: center; /* Centralizar o formulário */
+        }
+        /* Garante que o container do formulário não ultrapasse a largura da tela e seja centralizado */
+        #container_principal {
+            max-width: 800px; /* Ajuste conforme necessário */
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="containerStyle">
+            <div class="containerPadding">
+                <div id="userInfo" class="hidden">
+                    <div style="display: flex; align-items: center;">
+                        <img id="userPhoto" src="" alt="Foto" style="width:100px; height:100px; border-radius:50%; margin-right:20px;">
+                        <div>
+                            <h2 style="font-size:24pt; color:#A2BF3F;">Bem-vindo, <span id="userName"></span>!</h2>
+                            <p style="font-size:12pt; color:#FFFFFF;"><strong>Email:</strong> <span id="userEmail"></span></p>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                       <a href="novapagina.html" class="buttonStyle">Registro</a>
+                        <a href="perfil_integrado.html" id="contaLink" class="buttonStyle">Meu Perfil</a>
+                        <a href="criarloja.html" id="lojaLink" class="buttonStyle">Minha Loja</a>
+                        <button class="buttonStyle" disabled>Aiframe 1</button>
+                        <button class="buttonStyle" disabled>Aiframe 2</button>
+                        <button id="logoutButton" class="buttonStyle">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="statusMessageHeader" style="text-align: center; padding: 10px; color: white;"></div>
+    </div>
+
+    <div class="content-area">
+        <div id="statusMessageForm" style="text-align: center; margin: 20px 0; color: green;"></div>
+
+        <div id="container_principal">
+            <div id="container_formulario">
+                <div class="grupo_campos">
+                    <input type="text" class="input-style" id="input_cpf" placeholder="CPF">
+                    <div class="texto-auxiliar">Apenas números, 11 dígitos</div>
+                    <input type="text" class="input-style" id="input_cep" placeholder="CEP">
+                    <div class="texto-auxiliar">Digite o CEP para autocompletar</div>
+                    <input type="text" class="input-style" id="input_cidade" placeholder="Cidade">
+                    <div class="texto-auxiliar">Nome completo da cidade</div>
+                    <input type="text" class="input-style" id="input_bairro" placeholder="Bairro">
+                    <div class="texto-auxiliar">Nome do seu bairro</div>
+                </div>
+
+                <div class="grupo_campos">
+                    <input type="text" class="input-style" id="input_telefone" placeholder="Telefone">
+                    <div class="texto-auxiliar">Com DDD, ex: 11987654321</div>
+                    <input type="text" class="input-style" id="input_logradouro" placeholder="Logradouro">
+                     <div class="texto-auxiliar">Nome da rua/avenida</div>
+                    <input type="text" class="input-style" id="input_estado" placeholder="Estado">
+                    <div class="texto-auxiliar">Sigla (ex: SP, RJ)</div>
+                </div>
+
+                <button id="botao_enviar" class="buttonStyle">Salvar Perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Constantes e Variáveis Globais Unificadas ---
+        const USER_DATA_KEY = 'googleUserDataToken'; // Chave para buscar o token no localStorage
+        const CLIENT_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxF30STg18Sv29ezFA3v5vgvmvHcoxJEc_tq36Yht_kGmxP4FgKm7ZJE3ET9rRsJSH9/exec'; // URL do script para salvar/buscar dados do cliente
+
+        let googleUserId = null; // ID do Google do usuário logado
+        window.decodedToken = null; // Para armazenar o token decodificado globalmente
+
+        // --- Elementos DOM ---
+        // Elementos do cabeçalho (da novapagina.html)
+        const userInfoDiv = document.getElementById('userInfo');
+        const userNameSpan = document.getElementById('userName');
+        const userEmailSpan = document.getElementById('userEmail');
+        const userPhotoImg = document.getElementById('userPhoto');
+        const logoutButton = document.getElementById('logoutButton');
+        const statusMessageHeaderDiv = document.getElementById('statusMessageHeader'); // Mensagens de login/sessão
+
+        // Elementos do formulário (do perfil.html)
+        const statusMessageFormDiv = document.getElementById('statusMessageForm'); // Mensagens do formulário
+        const sendProfileButton = document.getElementById('botao_enviar');
+        // Inputs do formulário
+        const inputCpf = document.getElementById('input_cpf');
+        const inputTelefone = document.getElementById('input_telefone');
+        const inputCep = document.getElementById('input_cep');
+        const inputLogradouro = document.getElementById('input_logradouro');
+        const inputCidade = document.getElementById('input_cidade');
+        const inputBairro = document.getElementById('input_bairro');
+        const inputEstado = document.getElementById('input_estado');
+
+
+        // --- Funções Auxiliares ---
+
+        /**
+         * Decodifica um token JWT.
+         * @param {string} token O token JWT a ser decodificado.
+         * @returns {object|null} O payload decodificado ou null se inválido/expirado.
+         */
+        function jwtDecode(token) {
+            try {
+                if (!token) return null;
+                const parts = token.split('.');
+                if (parts.length !== 3) {
+                    console.error("Token JWT inválido: estrutura incorreta.");
+                    return null;
+                }
+                const base64Url = parts[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+                const payload = JSON.parse(jsonPayload);
+
+                const currentTime = Date.now() / 1000;
+                if (payload.exp && payload.exp < currentTime) {
+                    console.log('Token JWT expirado.');
+                    return null;
+                }
+                if (!payload.sub) {
+                    console.error("Token decodificado não contém 'sub' (ID do usuário).");
+                    return null;
+                }
+                window.decodedToken = payload;
+                return payload;
+            } catch (e) {
+                console.error("Erro ao decodificar JWT:", e);
+                window.decodedToken = null;
+                return null;
+            }
+        }
+
+        /**
+         * Atualiza a interface do usuário no cabeçalho com os dados do usuário.
+         * @param {object|null} userData Objeto com dados do usuário (name, email, picture) ou null.
+         */
+        function updateUI(userData) {
+            if (userData) {
+                if (userNameSpan) userNameSpan.textContent = userData.name || 'N/A';
+                if (userEmailSpan) userEmailSpan.textContent = userData.email || 'N/A';
+                if (userPhotoImg) {
+                    userPhotoImg.src = userData.picture || 'https://placehold.co/100x100/eeeeee/cccccc?text=Foto';
+                    userPhotoImg.onerror = () => { userPhotoImg.src = 'https://placehold.co/100x100/eeeeee/cccccc?text=Erro'; };
+                }
+                if (userInfoDiv) userInfoDiv.classList.remove('hidden');
+            } else {
+                if (userInfoDiv) userInfoDiv.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Realiza o logout do usuário.
+         */
+        function logout() {
+            localStorage.removeItem(USER_DATA_KEY);
+            window.decodedToken = null;
+            googleUserId = null;
+            if (statusMessageHeaderDiv) statusMessageHeaderDiv.textContent = 'Você foi desconectado. Redirecionando...';
+            // Redireciona para a página de login (assumindo index.html)
+            setTimeout(() => {
+                 window.location.href = 'index.html';
+            }, 1500);
+        }
+
+        /**
+         * Busca dados do cliente na planilha associados ao googleUserId.
+         * @param {string} userId O ID do Google do usuário.
+         */
+        async function fetchClientData(userId) {
+            if (!userId) {
+                console.log("Nenhum ID de usuário para buscar dados do perfil.");
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Erro interno: ID do usuário não disponível para carregar perfil.';
+                return;
+            }
+            if (!CLIENT_SHEET_URL) {
+                console.error('URL da planilha (CLIENT_SHEET_URL) não configurada.');
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Erro: URL de busca de perfil não configurada.';
+                return;
+            }
+
+            const fetchUrl = `${CLIENT_SHEET_URL}?googleUserId=${encodeURIComponent(userId)}`;
+            console.log("Buscando dados do cliente em:", fetchUrl);
+            if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Buscando dados do perfil...';
+
+            try {
+                const response = await fetch(fetchUrl);
+                if (!response.ok) {
+                    throw new Error(`Erro na rede ao buscar dados do perfil: ${response.status} ${response.statusText}`);
+                }
+                const data = await response.json();
+                console.log("Dados do perfil recebidos:", data);
+
+                if (data.status === 'error') {
+                    console.error("Erro retornado pelo Apps Script ao buscar perfil:", data.message);
+                    if (statusMessageFormDiv) statusMessageFormDiv.textContent = `Erro ao buscar perfil: ${data.message}`;
+                } else if (data.status === 'success' && data.clientData) {
+                    populateForm(data.clientData);
+                    if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Dados do perfil carregados.';
+                } else {
+                    console.log("Nenhum dado de perfil encontrado para este usuário ou formato de resposta inesperado.");
+                    if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Nenhum perfil encontrado. Preencha para criar.';
+                }
+            } catch (error) {
+                console.error('Erro ao buscar dados do perfil do cliente:', error);
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = `Erro ao conectar para buscar perfil: ${error.message}`;
+            }
+        }
+
+        /**
+         * Preenche os campos do formulário com os dados do cliente.
+         * @param {object} clientData Objeto contendo os dados do cliente.
+         */
+        function populateForm(clientData) {
+            const fieldMap = {
+                'cpf': inputCpf,
+                'tel': inputTelefone,
+                'cep': inputCep,
+                'logradouro': inputLogradouro,
+                'cidade': inputCidade,
+                'bairro': inputBairro,
+                'estado': inputEstado
+            };
+            console.log("Preenchendo formulário com:", clientData);
+            for (const dataKey in fieldMap) {
+                if (clientData.hasOwnProperty(dataKey) && clientData[dataKey] !== undefined && clientData[dataKey] !== null) {
+                    const inputElement = fieldMap[dataKey];
+                    if (inputElement) {
+                        inputElement.value = clientData[dataKey];
+                    } else {
+                        console.warn(`Elemento do formulário para "${dataKey}" não encontrado.`);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Envia os dados do formulário para a planilha Google.
+         */
+        function handleSaveProfile() {
+            if (!googleUserId) {
+                console.error('ID do Google não encontrado para salvar perfil. O usuário pode não estar logado.');
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Erro: ID do usuário não encontrado. Faça login novamente.';
+                return;
+            }
+            if (!CLIENT_SHEET_URL) {
+                console.error('URL da planilha (CLIENT_SHEET_URL) não configurada para salvar.');
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Erro: URL de salvamento não configurada.';
+                return;
+            }
+
+            const clientData = {
+                cpf: inputCpf?.value || '',
+                tel: inputTelefone?.value || '',
+                cep: inputCep?.value || '',
+                logradouro: inputLogradouro?.value || '',
+                cidade: inputCidade?.value || '',
+                bairro: inputBairro?.value || '',
+                estado: inputEstado?.value || ''
+            };
+
+            const dataToSend = { ...clientData, googleUserId: googleUserId };
+
+            console.log("Enviando dados do perfil para a planilha:", dataToSend);
+            if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Salvando dados do perfil...';
+
+            fetch(CLIENT_SHEET_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Importante: Google Apps Script Web Apps geralmente requerem 'no-cors' para POST simples ou redirecionam para uma página de sucesso.
+                                 // Se você precisa ler a resposta JSON, o Apps Script precisa ser configurado para `ContentService.createTextOutput(JSON.stringify(output)).setMimeType(ContentService.MimeType.JSON);`
+                                 // e o `doPost` precisa tratar CORS adequadamente se não for 'no-cors'.
+                cache: 'no-cache',
+                headers: {
+                    // 'Content-Type': 'application/json', // Com 'no-cors', o Content-Type pode ser restrito pelo navegador.
+                                                          // O Apps Script pode precisar usar `e.postData.contents` e `JSON.parse`.
+                                                          // Para simplificar e garantir compatibilidade com o script original de perfil.js, vamos enviar como text/plain
+                    'Content-Type': 'text/plain;charset=utf-8', // Para enviar como stringified JSON no corpo
+                },
+                // body: JSON.stringify(dataToSend) // Se o Apps Script espera JSON direto no e.postData.contents
+                // Para enviar como um parâmetro de formulário (mais comum com no-cors e Apps Script simples):
+                 body: JSON.stringify(dataToSend) // Mantendo como no perfil.js original, assumindo que o Apps Script lida com JSON.parse(e.postData.contents)
+            })
+            .then(response => {
+                // Com 'no-cors', a resposta é opaca, não podemos ler o status ou o corpo diretamente.
+                console.log('Dados do perfil enviados para o Google Apps Script (modo no-cors).');
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = 'Dados do perfil salvos com sucesso!';
+                // Opcional: Recarregar os dados para confirmar, se necessário, mas pode ser redundante.
+                // fetchClientData(googleUserId);
+            })
+            .catch(error => {
+                console.error('Erro ao enviar dados do perfil para a planilha:', error);
+                if (statusMessageFormDiv) statusMessageFormDiv.textContent = `Erro ao salvar perfil: ${error.message}. Verifique a conexão.`;
+            });
+        }
+
+
+        // --- Inicialização da Página ---
+        window.addEventListener('load', () => {
+            console.log("Página de Perfil Integrado carregada.");
+            const storedToken = localStorage.getItem(USER_DATA_KEY);
+
+            if (sendProfileButton) sendProfileButton.disabled = true; // Desabilitar por padrão
+
+            if (storedToken) {
+                const decodedPayload = jwtDecode(storedToken);
+                if (decodedPayload && decodedPayload.sub) {
+                    googleUserId = decodedPayload.sub; // Define o ID do usuário globalmente
+                    console.log("Usuário logado. ID:", googleUserId);
+
+                    updateUI(decodedPayload); // Atualiza o cabeçalho
+                    if (statusMessageHeaderDiv) statusMessageHeaderDiv.textContent = 'Sessão carregada.';
+
+                    fetchClientData(googleUserId); // Busca os dados do perfil
+
+                    if (sendProfileButton) {
+                        sendProfileButton.disabled = false; // Habilita o botão de salvar
+                        sendProfileButton.addEventListener('click', handleSaveProfile);
+                    }
+
+                } else {
+                    if (statusMessageHeaderDiv) statusMessageHeaderDiv.textContent = 'Sessão inválida ou expirada. Redirecionando para login...';
+                    console.log("Token inválido, expirado ou sem 'sub'.");
+                    logout(); // Limpa o token inválido e redireciona
+                }
+            } else {
+                if (statusMessageHeaderDiv) statusMessageHeaderDiv.textContent = 'Nenhuma sessão encontrada. Redirecionando para login...';
+                console.log("Nenhum token encontrado.");
+                // Atraso para o usuário ver a mensagem antes de redirecionar
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }
+
+            // Adiciona listener para o botão de logout
+            if (logoutButton) {
+                logoutButton.addEventListener('click', logout);
+            }
+        });
+    </script>
+</body>
+</html>
