@@ -42,6 +42,9 @@ body {
     align-items: center;
     cursor: pointer;
     text-decoration: none;
+    .buttonStyle:hover {
+            background-color: #8CA336;
+        }
 }
 
 .hidden {
