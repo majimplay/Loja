@@ -381,6 +381,8 @@
             
             const response = await fetch(STORE_DATA_SCRIPT_URL, {
                 method: 'POST',
+                mode: 'no-cors', // Google Apps Script Web Apps geralmente requerem 'no-cors' para POST simples
+                                     // ou precisam de tratamento de CORS e resposta JSON adequada no script.
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(storeData)
             });
