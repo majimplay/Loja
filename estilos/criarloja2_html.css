@@ -1,11 +1,25 @@
-       a { color:#5D5D9E; } 
+a { color:#5D5D9E; } 
 a:visited { color:#5D5D9E; } 
 a:active { color:#5C615E; } 
 a:hover { color:#B2B3B4; } 
-body { background-color:#FFFFFF; padding:0;  margin: 0; }
+
+body { 
+font-family: sans-serif; /* Fonte padrão para melhor legibilidade */
+ background-color:#FFFFFF; padding:0;  margin: 0;
+}
+ .content-area {
+            padding: 20px;
+            max-width: 1200px; /* Limita a largura máxima do conteúdo */
+            margin: 0 auto; /* Centraliza o conteúdo */
+        }
+
 .textstyle1 { text-align:left; }
-#main_container { vertical-align: top; position:relative; display: inline-block; width:100%; min-height:762px; background-color:#00FFFF;  }
+
+#main_container {margin: 0 auto; vertical-align: top; position:relative; display: inline-block; width:100%; min-height:762px; background-color:#00FFFF;  }
 #main_container_padding { margin: 10px; display: block;  }
+.upload-area { border: 2px dashed #ccc; padding: 10px; text-align: center;  cursor: pointer; background-color: #f9f9f9; margin-bottom: 15px; /* Espaçamento abaixo das áreas de upload */ }
+ .upload-area img {  max-width: 100%;  max-height: 300px; /* Limita a altura da pré-visualização */ display: block; margin: 10px auto; }
+ .upload-area:hover { border-color: #A2BF3F; /* Cor de destaque do cabeçalho */ background-color: #f0f0f0;  }
 .textstyle2 { text-align:center; }
 .textstyle3 { font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000;  }
 #welcome_label { vertical-align: bottom; position:relative; display: inline-block; width:524px; height:179px; background:none; font-size:36pt; font-family:Arial, Helvetica, sans-serif; color:#000000; text-align:center;  }
@@ -13,7 +27,14 @@ body { background-color:#FFFFFF; padding:0;  margin: 0; }
 #input_fields_container_padding { margin: 10px; display: block;  }
 #store_name_input { box-sizing: border-box; vertical-align: bottom; position:relative; display: inline-block; width:150px; height:30px; background-color:#FFFFFF; border: 1px solid #A0A0A0; font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000;  }
 #store_cep_input { box-sizing: border-box; vertical-align: bottom; position:relative; display: inline-block; width:150px; height:30px; background-color:#FFFFFF; border: 1px solid #A0A0A0; font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000;  }
-#save_button { box-sizing: border-box; vertical-align: bottom; border-radius: 9px; position:relative; display: inline-block; width:150px; height:40px; background-color:#5A4ABC; background: linear-gradient(to bottom,#5A4ABC, #282154 50%, #1F1941 50%, #16122F); border: 2px solid #2F2759;  }
+#save_button {transition: background-color 0.3s ease; margin: 5px; font-size: 16px; cursor: pointer; box-sizing: border-box; vertical-align: bottom; border-radius: 9px; position:relative; display: inline-block; width:150px; height:40px; background-color:#5A4ABC; background: linear-gradient(to bottom,#5A4ABC, #282154 50%, #1F1941 50%, #16122F); border: 2px solid #2F2759;  }
+#save_button:hover{background-color: #8aab30;}
+#orders_button:hover{background-color: #8aab30;}
+#products_button:hover{background-color: #8aab30;}
+   input[type="text"] {    padding: 10px;  border: 1px solid #ccc; border-radius: 4px;  margin-bottom: 10px;  width: calc(100% - 22px); /* Ajustar largura considerando padding e borda */}
+  label {  display: block;   margin-bottom: 5px;   font-weight: bold;  }
+ .texto-auxiliar-criarloja { /* Classe para textos auxiliares, se necessário */  font-size: 0.9em;  color: #666;  margin-bottom: 15px;  }
+#orders_button .vcenterstyle1, #products_button .vcenterstyle1 { /* display: none;  Pode ser necessário se os botões originais tiverem conteúdo visível */}
 .vcenterstyle1 { display: table; width: 100%; height: 100%; }
 .vcenterstyle2 { display: table-cell; vertical-align: middle; }
 .textstyle4 { font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#FFFFFF;  }
