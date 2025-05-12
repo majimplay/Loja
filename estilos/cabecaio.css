@@ -3,7 +3,7 @@ background-color:#400080;
     padding: 0;
     margin: 0;
 }
-.statusMessage {  color: white; }
+.statusMessage {  color: white ; justify-content: center;}
 .containerStyle {
     box-sizing: border-box;
     vertical-align: top;
