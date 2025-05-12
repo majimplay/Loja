@@ -215,6 +215,41 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="scripts/login.js"></script>
     <script src="scripts/geprodutos.js"></script>
-	
+<script>
+// === Script para Adicionar Produto (CORS) ===
+document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
+    const produto = {
+        action: "add",
+        gogoid: window.decodedToken?.sub,
+        nome: document.getElementById('inputProdutoNome').value,
+        preco: document.getElementById('inputProdutoPreco').value
+    };
+
+    if (!produto.nome || !produto.preco) {
+        alert("Preencha nome e preço do produto!");
+        return;
+    }
+
+    try {
+        const response = await fetch('SUA_URL_GOOGLE_APPS_SCRIPT', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Origin': 'https://SEU_USUARIO.github.io' // Substitua pelo seu domínio
+            },
+            body: JSON.stringify(produto)
+		        console.log("tentando enviar ",produto);
+        });
+
+ 
+        
+       
+    } catch (error) {
+        console.error('Erro:', error);
+        alert(`Falha ao adicionar: ${error.message}`);
+    }
+});
+	</script>
 </body>
 </html>
