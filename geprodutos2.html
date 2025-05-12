@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="generator" content="RocketCake">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="estilos/geprodutos_html.css?h=ae68fce6">
+   <link rel="stylesheet" href="estilos/cabecaio.css">
+    <style>
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="containerStyle">
+            <div class="containerPadding">
+                <div id="userInfo" class="hidden">
+                    <div style="display: flex; align-items: center;">
+                        <img id="userPhoto" src="" alt="Foto" style="width:100px; height:100px; border-radius:50%; margin-right:20px;">
+                        <div>
+                            <h2 style="font-size:24pt; color:#A2BF3F;">Bem-vindo, <span id="userName"></span>!</h2>
+                            <p style="font-size:12pt; color:#FFFFFF;"><strong>Email:</strong> <span id="userEmail"></span></p>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                            <!-- <a href="registo.html" target="_blank" class="buttonStyle">Registro</a> -->
+                       <a href="novapagina.html" target="_blank" class="buttonStyle">Registro</a>
+                        <a href="perfil.html" id="contaLink" class="buttonStyle">Meu Perfil</a>
+                        <a href="criarloja.html" id="lojaLink" class="buttonStyle">Minha Loja</a>
+                        <button class="buttonStyle" disabled>Aiframe 1</button>
+                        <button class="buttonStyle" disabled>Aiframe 2</button>
+                        <button id="logoutButton" class="buttonStyle">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="statusMessage"></div>
+    </div>
+</head>
+<body>
+<div class="textstyle1">
+<span class="textstyle2">gerenciamento de produtos<br/></span><div id="container_64485fad"><div id="container_64485fad_padding" ><div class="textstyle1"><span class="textstyle3">clique ou arraste para adicionar imagem</span><span class="textstyle4"> <br/></span><div id="imagedrop_here"><div class="vcenterstyle1"><div class="vcenterstyle2"></div></div></div><span class="textstyle3"> <br/></span>
+
+<div id="container_imagens_adicionar">
+    </div>
+<div id="container_5cbd2978"><div id="container_5cbd2978_padding" ><div class="textstyle5"><table id="tabelaaddproduto" cellpadding="3" cellspacing="1" >	<tr>
+		<td width="35%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_43dea141">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="inputprodutonome"  id="inputProdutoNome" >
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_1809c9fc">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="inputprodutopreco"  id="inputProdutoPreco" >
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_741b1441">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="inputprodutopeso"  id="inputProdutoPeso" >
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_60dba8b2">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="inputprodutoaltura"  id="inputProdutoAltura" >
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_63efa2b7">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="inputprodutolargura"  id="inputProdutoLargura" >
+      </div>
+    </div>
+		</td>
+		<td width="26%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_274cbdb6">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="TextEdit5"  id="inputProdutoComprimento" >
+      </div>
+    </div>
+		</td>
+	</tr>
+	<tr>
+		<td width="35%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_526a9cdd">
+    <div class="textstyle5">
+      <span class="textstyle6">nome</span>
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_5ad1743c">
+    <div class="textstyle5">
+      <span class="textstyle6">preco</span>
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_55cd82bf">
+    <div class="textstyle5">
+      <span class="textstyle6">peso</span>
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_1efa2331">
+    <div class="textstyle5">
+      <span class="textstyle6">altura</span>
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_68473273">
+    <div class="textstyle5">
+      <span class="textstyle6">largura</span>
+      </div>
+    </div>
+		</td>
+		<td width="26%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_557d032a">
+    <div class="textstyle5">
+      <span class="textstyle6">comprimento</span>
+      </div>
+    </div>
+		</td>
+	</tr>
+</table><span class="textstyle7"><br/></span></div>
+<div class="textstyle1"><div id="btnAdicionarProduto"><div class="vcenterstyle1"><div class="vcenterstyle2"><div class="textstyle1">  <span class="textstyle4">adicionar produto</span>
+</div>
+</div></div></div></div>
+<div style="clear:both"></div></div></div></div>
+<div style="clear:both"></div></div></div><span class="textstyle2"><hr style="margin: 10px ;">meus produtos<hr style="margin: 10px ;"></span>  </div>
+<div class="textstyle5">
+<div id="container_9954efc"><div id="container_9954efc_padding" ><div class="textstyle5"><span class="textstyle8"><br/></span><table id="Tabeladeprodutos" cellpadding="3" cellspacing="1" >	<tr>
+		<td width="74%" height="15px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_18a61349">
+    <div class="textstyle5">
+      <span class="textstyle8">imagens</span>
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="15px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_7e4f3457">
+    <div class="textstyle5">
+      <span class="textstyle8">nome</span>
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="15px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_466424f6">
+    <div class="textstyle5">
+      <span class="textstyle8">preco</span>
+      </div>
+    </div>
+		</td>
+		<td width="7%" height="15px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_66981399">
+    <div class="textstyle5">
+      <span class="textstyle8">acoes</span>
+      </div>
+    </div>
+		</td>
+	</tr>
+	<tr>
+		<td  width="100%" height="15px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_imagens" ">
+    <div class="textstyle5">
+<div id="container_imagens"  ><div id="container_imagens_padding" ><div class="textstyle5">
+  </div></div></div>
+
+<div style="clear:both"></div></div></div>      </div>
+    </div>
+		</td>
+		<td width="10%" height="296px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_1b33dca6">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="TextEdit1"  id="inputListaProdutoNome" >
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="296px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_6fbd9cc7">
+    <div class="textstyle5">
+<input type="text" value="" title="" name="TextEdit2"  id="inputListaProdutoPreco" >
+      </div>
+    </div>
+		</td>
+		<td width="7%" height="296px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_8033757">
+    <div class="textstyle5">
+      <div id="btnMoverCima">
+        <div class="vcenterstyle1"><div class="vcenterstyle2">          <div class="textstyle1">
+            <span class="textstyle9">🔺</span>
+            </div>
+          </div></div>
+        </div>
+      <span class="textstyle8"><br/></span>
+      <div id="btnMoverBaixo">
+        <div class="vcenterstyle1"><div class="vcenterstyle2">          <div class="textstyle1">
+            <span class="textstyle9">🔻</span>
+            </div>
+          </div></div>
+        </div>
+      <span class="textstyle8"><br/></span>
+      <div id="btnEditarProduto">
+        <div class="vcenterstyle1"><div class="vcenterstyle2">          <div class="textstyle1">
+            <span class="textstyle9">editar<br/></span>
+            </div>
+          </div></div>
+        </div>
+      <span class="textstyle8"><br/></span>
+      <div id="btnExcluirProduto">
+        <div class="vcenterstyle1"><div class="vcenterstyle2">          <div class="textstyle1">
+            <span class="textstyle9">excluir</span>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+		</td>
+	</tr>
+</table></div>
+<div style="clear:both"></div></div></div>  </div>
+<div class="textstyle1">
+<span class="textstyle2"><br/><br/><br/><br/><br/></span>  </div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="scripts/login.js"></script>
+    <script src="scripts/geprodutos.js"></script>
+	
+</body>
+</html>
