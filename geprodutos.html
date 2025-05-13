@@ -219,15 +219,15 @@
 // === Script para Adicionar Produto (CORS) ===
 document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
     const produto = {
-        action: "add",
-        GOGOID: window.decodedToken?.sub,
-        NOME: document.getElementById('inputProdutoNome').value,
-        PRECO: document.getElementById('inputProdutoPreco').value,
-        PESO: document.getElementById('inputprodutopeso').value,
-        ALTURA: document.getElementById('inputProdutoAltura').value,
-	LARGURA: document.getElementById('inputprodutolargura').value,
-	COMPRIMENTO: document.getElementById('inputProdutoComprimento').value,
-    };
+    action: "add",
+            GOGOID: window.decodedToken?.sub,
+            NOME: document.getElementById('inputProdutoNome').value,
+            PRECO: document.getElementById('inputProdutoPreco').value,
+            PESO: document.getElementById('inputProdutoPeso').value, // Corrigido
+            ALTURA: document.getElementById('inputProdutoAltura').value,
+            LARGURA: document.getElementById('inputProdutoLargura').value, // Corrigido
+            COMPRIMENTO: document.getElementById('inputProdutoComprimento').value // Sem vírgula no final
+        };
 
     if (!produto.nome || !produto.preco) {
         alert("Preencha nome e preço do produto!");
