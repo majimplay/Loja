@@ -124,7 +124,7 @@
 async function uploadImageToImgBB(imageData) {
     const formData = new FormData();
     formData.append('image', imageData.split(',')[1]); // Remove o prefixo Data URL
-
+    formData.append("album", "2SGYcL"); // ID do seu álbum
     try {
         const response = await fetch(`https://api.imgbb.com/1/upload?key=43ff22682bbe91ea89a32047a821bae8`, {
             method: 'POST',
