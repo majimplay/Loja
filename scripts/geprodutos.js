@@ -121,6 +121,23 @@
     })();
     //--------------fim carrossel com vetor de imagens A SEREM adicionadas ---------------------
 
+async function uploadImageToImgBB(imageData) {
+    const formData = new FormData();
+    formData.append('image', imageData.split(',')[1]); // Remove o prefixo Data URL
+
+    try {
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=43ff22682bbe91ea89a32047a821bae8`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        return data.data.url; // Retorna a URL da imagem
+    } catch (error) {
+        console.error('Erro ao enviar imagem:', error);
+        return null;
+    }
+}
+
     // O carrossel para o contêiner de imagens DOS PRODUTOS SALVOS (container_imagens)
     // Se você já tem um script separado para ele ou ele é gerenciado de outra forma, mantenha-o.
     // Se o script acima era o único carrossel, você precisará duplicá-lo ou generalizá-lo
