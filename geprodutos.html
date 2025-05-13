@@ -220,9 +220,13 @@
 document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
     const produto = {
         action: "add",
-        gogoid: window.decodedToken?.sub,
-        nome: document.getElementById('inputProdutoNome').value,
-        preco: document.getElementById('inputProdutoPreco').value
+        GOGOID: window.decodedToken?.sub,
+        NOME: document.getElementById('inputProdutoNome').value,
+        PRECO: document.getElementById('inputProdutoPreco').value
+        PESO: document.getElementById('inputprodutopeso').value,
+        ALTURA: document.getElementById('inputProdutoAltura').value,
+	LARGURA: document.getElementById('inputprodutolargura').value,
+	COMPRIMENTO: document.getElementById('inputProdutoComprimento').value
     };
 
     if (!produto.nome || !produto.preco) {
