@@ -266,7 +266,7 @@ document.getElementById('btnAdicionarProduto').addEventListener('click', async (
         
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'cors', // MUDANÇA: Usar 'cors' para poder ler a resposta
+            mode: 'no-cors', // MUDANÇA: Usar 'cors' para poder ler a resposta
             cache: 'no-cache',
             headers: { 
                 'Content-Type': 'application/json' 
