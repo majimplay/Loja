@@ -231,12 +231,12 @@ document.getElementById('btnAdicionarProduto').addEventListener('click', async (
     }
 
     try {
-        const response = await fetch('SUA_URL_GOOGLE_APPS_SCRIPT', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec', {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
-                'Origin': 'https://SEU_USUARIO.github.io' // Substitua pelo seu domínio
+                'Origin': 'https://github.com/majimplay' // Substitua pelo seu domínio
             },
             body: JSON.stringify(produto)
 		        
