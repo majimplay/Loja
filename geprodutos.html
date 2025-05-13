@@ -288,6 +288,10 @@ document.getElementById('btnAdicionarProduto').addEventListener('click', async (
     } catch (error) {
         console.error('Erro:', error);
         alert('Falha ao enviar produto.');
+  } finally {
+        isSubmitting = false;
+        btn.classList.remove('disabled');
+        btn.innerHTML = originalContent;
     }
 });
 	</script>
