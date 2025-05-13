@@ -247,6 +247,7 @@ document.getElementById('btnAdicionarProduto').addEventListener('click', async (
 
         const produto = {
             action: "add",
+		  productData: {
                 GOGOID: window.decodedToken?.sub, 
                 NOME: document.getElementById('inputProdutoNome').value,
                 PRECO: document.getElementById('inputProdutoPreco').value,
