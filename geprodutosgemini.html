@@ -516,7 +516,9 @@ async function loadUserProducts() {
     const gogoId = window.decodedToken.sub;
     const payload = {
         action: "load",
+	     productData: {
         GOGOID: gogoId
+	     }
     };
     
     const tableBody = document.querySelector('#Tabeladeprodutos tbody');
