@@ -218,6 +218,12 @@
 <script>
 // === Script para Adicionar Produto (CORS) ===
 document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
+    // Passo 1: Enviar imagens para o ImgBB e coletar URLs
+    const imageUrls = [];
+    for (const imageData of imagesToAdd) {
+        const url = await uploadImageToImgBB(imageData);
+        if (url) imageUrls.push(url);
+    }
 const produto = {
     action: "add",
     productData: { // ← Adicione esta camada!
@@ -228,29 +234,31 @@ const produto = {
         ALTURA: document.getElementById('inputProdutoAltura').value,
         LARGURA: document.getElementById('inputProdutoLargura').value,
         COMPRIMENTO: document.getElementById('inputProdutoComprimento').value
+	    IMAGENS: imageUrls.join(', ') // URLs separadas por vírgula
     }
 };
 
  //   if (!produto.nome || !produto.preco) {
    //     alert("Preencha nome e preço do produto!");
      //   return;
-  //  }
+  //    mode: 'no-cors', }
 
-    try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec', {
+   try {
+        const response = await fetch('SUA_URL_DO_APPS_SCRIPT', {
             method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Origin': 'https://github.com/majimplay' // Substitua pelo seu domínio
-            },
+	    mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(produto)
-		        
         });
-        console.log("tentando enviar ",produto);
- 
-        
-       
+        console.log("Produto e imagens enviados:", produto);
+        alert('Produto cadastrado com sucesso!');
+        imagesToAdd = []; // Limpa as imagens após o envio
+        displayImagesToAdd(); // Atualiza a exibição
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Falha ao enviar produto.');
+    }
+});
     } catch (error) {
         console.error('Erro:', error);
         alert(`Falha ao adicionar: ${error.message}`);
