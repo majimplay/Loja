@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="generator" content="RocketCake">
+	<title>Gerenciamento de Produtos</title>
+	<link rel="stylesheet" type="text/css" href="estilos/geprodutos_html.css?h=ae68fce6">
+   <link rel="stylesheet" href="estilos/cabecaio.css">
+    <style>
+        /* Estilos básicos para o carrossel de imagens do produto */
+        .product-image-carousel {
+            display: flex;
+            overflow-x: auto; /* Permite rolagem horizontal */
+            overflow-y: hidden;
+            white-space: nowrap; /* Impede que as imagens quebrem linha */
+            cursor: grab;
+            border: 1px solid #ddd;
+            padding: 5px;
+            background-color: #f9f9f9;
+            min-height: 100px; /* Altura mínima para visualização */
+            align-items: center; /* Centraliza imagens verticalmente se forem menores */
+        }
+
+        .product-image-carousel img {
+            max-height: 150px; /* Altura máxima das imagens no carrossel */
+            margin-right: 10px; /* Espaçamento entre as imagens */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+        }
+
+        .product-image-carousel.active {
+            cursor: grabbing;
+        }
+
+        /* Estilo para o spinner de carregamento */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            display: inline-block;
+            animation: spin 1s ease infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #btnAdicionarProduto.disabled {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Adicionando estilo para botões de ação na tabela */
+        .action-button {
+            padding: 5px 10px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .action-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Ajustes na tabela de produtos para melhor visualização */
+        #Tabeladeprodutos td {
+            vertical-align: middle; /* Alinha conteúdo das células verticalmente */
+            padding: 8px; /* Adiciona algum preenchimento */
+        }
+        #Tabeladeprodutos th { /* Estilizando cabeçalhos se você mudar para th */
+             text-align: left;
+             padding: 8px;
+             background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <div class="containerStyle">
+            <div class="containerPadding">
+                <div id="userInfo" class="hidden">
+                    <div style="display: flex; align-items: center;">
+                        <img id="userPhoto" src="" alt="Foto do Usuário" style="width:100px; height:100px; border-radius:50%; margin-right:20px;" onerror="this.src='https://placehold.co/100x100/eeeeee/cccccc?text=Foto'">
+                        <div>
+                            <h2 style="font-size:24pt; color:#A2BF3F;">Bem-vindo, <span id="userName"></span>!</h2>
+                            <p style="font-size:12pt; color:#FFFFFF;"><strong>Email:</strong> <span id="userEmail"></span></p>
+                        </div>
+                    </div>
+                    <div class="button-container">
+                       <a href="novapagina.html" target="_blank" class="buttonStyle">Registro</a>
+                        <a href="perfil.html" id="contaLink" class="buttonStyle">Meu Perfil</a>
+                        <a href="criarloja.html" id="lojaLink" class="buttonStyle">Minha Loja</a>
+                        <button class="buttonStyle" disabled>Aiframe 1</button>
+                        <button class="buttonStyle" disabled>Aiframe 2</button>
+                        <button id="logoutButton" class="buttonStyle">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="statusMessage" style="text-align: center; padding: 10px; color: #333;"></div>
+    </div>
+
+
+<div class="textstyle1">
+<span class="textstyle2">Gerenciamento de produtos<br/></span><div id="container_64485fad"><div id="container_64485fad_padding" ><div class="textstyle1"><span class="textstyle3">Clique ou arraste para adicionar imagem</span><span class="textstyle4"> <br/></span><div id="imagedrop_here"><div class="vcenterstyle1"><div class="vcenterstyle2"></div></div></div><span class="textstyle3"> <br/></span>
+
+<div id="container_imagens_adicionar" class="product-image-carousel" style="min-height: 120px; margin-bottom:15px;">
+    </div>
+<div id="container_5cbd2978"><div id="container_5cbd2978_padding" ><div class="textstyle5"><table id="tabelaaddproduto" cellpadding="3" cellspacing="1" >	<tr>
+		<td width="35%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_43dea141">
+    <div class="textstyle5">
+<input type="text" value="" title="Nome do Produto" name="inputprodutonome"  id="inputProdutoNome" placeholder="Nome do Produto">
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_1809c9fc">
+    <div class="textstyle5">
+<input type="text" value="" title="Preço do Produto" name="inputprodutopreco"  id="inputProdutoPreco" placeholder="Preço">
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_741b1441">
+    <div class="textstyle5">
+<input type="text" value="" title="Peso do Produto" name="inputprodutopeso"  id="inputProdutoPeso" placeholder="Peso">
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_60dba8b2">
+    <div class="textstyle5">
+<input type="text" value="" title="Altura do Produto" name="inputprodutoaltura"  id="inputProdutoAltura" placeholder="Altura">
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_63efa2b7">
+    <div class="textstyle5">
+<input type="text" value="" title="Largura do Produto" name="inputprodutolargura"  id="inputProdutoLargura" placeholder="Largura">
+      </div>
+    </div>
+		</td>
+		<td width="26%" height="24px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_274cbdb6">
+    <div class="textstyle5">
+<input type="text" value="" title="Comprimento do Produto" name="TextEdit5"  id="inputProdutoComprimento" placeholder="Comprimento">
+      </div>
+    </div>
+		</td>
+	</tr>
+	<tr>
+		<td width="35%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_526a9cdd">
+    <div class="textstyle5">
+      <span class="textstyle6">Nome</span>
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_5ad1743c">
+    <div class="textstyle5">
+      <span class="textstyle6">Preço</span>
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_55cd82bf">
+    <div class="textstyle5">
+      <span class="textstyle6">Peso (kg)</span>
+      </div>
+    </div>
+		</td>
+		<td width="8%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_1efa2331">
+    <div class="textstyle5">
+      <span class="textstyle6">Altura (cm)</span>
+      </div>
+    </div>
+		</td>
+		<td width="10%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_68473273">
+    <div class="textstyle5">
+      <span class="textstyle6">Largura (cm)</span>
+      </div>
+    </div>
+		</td>
+		<td width="26%" height="52px" style="vertical-align: top; overflow:hidden; ">  <div id="cell_557d032a">
+    <div class="textstyle5">
+      <span class="textstyle6">Comprimento (cm)</span>
+      </div>
+    </div>
+		</td>
+	</tr>
+</table><span class="textstyle7"><br/></span></div>
+<div class="textstyle1"><div id="btnAdicionarProduto"><div class="vcenterstyle1"><div class="vcenterstyle2"><div class="textstyle1">  <span class="textstyle4">Adicionar Produto</span>
+</div>
+</div></div></div></div>
+<div style="clear:both"></div></div></div></div>
+<div style="clear:both"></div></div></div><span class="textstyle2"><hr style="margin: 10px ;">Meus Produtos<hr style="margin: 10px ;"></span>  </div>
+<div class="textstyle5">
+<div id="container_9954efc"><div id="container_9954efc_padding" ><div class="textstyle5"><span class="textstyle8"><br/></span>
+<table id="Tabeladeprodutos" cellpadding="3" cellspacing="1" style="width:100%; border-collapse: collapse;">
+    <thead> <tr>
+            <td width="40%" height="15px" style="vertical-align: top; overflow:hidden; font-weight:bold; background-color: #f0f0f0; padding: 8px; border: 1px solid #ddd;">Imagens</td>
+            <td width="30%" height="15px" style="vertical-align: top; overflow:hidden; font-weight:bold; background-color: #f0f0f0; padding: 8px; border: 1px solid #ddd;">Nome</td>
+            <td width="15%" height="15px" style="vertical-align: top; overflow:hidden; font-weight:bold; background-color: #f0f0f0; padding: 8px; border: 1px solid #ddd;">Preço</td>
+            <td width="15%" height="15px" style="vertical-align: top; overflow:hidden; font-weight:bold; background-color: #f0f0f0; padding: 8px; border: 1px solid #ddd;">Ações</td>
+        </tr>
+    </thead>
+    <tbody>
+        </tbody>
+</table>
+</div>
+<div style="clear:both"></div></div></div>  </div>
+<div class="textstyle1">
+<span class="textstyle2"><br/><br/><br/><br/><br/></span>  </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="scripts/login.js"></script>
+    <script src="scripts/geprodutos.js"></script>
+
+<script>
+// === Script para Adicionar Produto (no-CORS) ===
+// Mantém o script original de adicionar produto
+let isSubmitting = false;
+document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
+    if (isSubmitting) return;
+    
+    const btn = document.getElementById('btnAdicionarProduto');
+    const originalContent = btn.innerHTML; // Salva o conteúdo original do botão
+
+    try {
+        isSubmitting = true;
+        btn.classList.add('disabled'); // Adiciona classe para feedback visual e desabilitar
+        btn.innerHTML = 'Enviando... <div class="loading-spinner"></div>'; // Adiciona spinner
+
+        const imageUrls = [];
+        // O 'imagesToAdd' é definido e populado em geprodutos.js
+        for (const imageData of imagesToAdd) { 
+            const url = await uploadImageToImgBB(imageData); // uploadImageToImgBB está em geprodutos.js
+            if (url) imageUrls.push(url);
+        }
+
+        const produto = {
+            action: "add",
+            productData: {
+                GOGOID: window.decodedToken?.sub, // Do login.js
+                NOME: document.getElementById('inputProdutoNome').value,
+                PRECO: document.getElementById('inputProdutoPreco').value,
+                PESO: document.getElementById('inputProdutoPeso').value,
+                ALTURA: document.getElementById('inputProdutoAltura').value,
+                LARGURA: document.getElementById('inputProdutoLargura').value,
+                COMPRIMENTO: document.getElementById('inputProdutoComprimento').value,
+                IMAGENS: imageUrls.join(', ') // Converte array de URLs em string separada por vírgula
+            }
+        };
+
+        // Validação básica (opcional, mas recomendada)
+        if (!produto.productData.NOME || !produto.productData.PRECO || !produto.productData.GOGOID) {
+            alert('Nome, Preço e Login são obrigatórios para adicionar um produto.');
+            throw new Error('Dados incompletos.'); // Interrompe a execução
+        }
+        
+        // URL do seu Google Apps Script
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
+        
+        // O modo 'no-cors' é usado aqui porque o script do Google Apps Script
+        // pode não retornar cabeçalhos CORS que permitam a leitura da resposta.
+        // Isso significa que não podemos ler diretamente o status ou o corpo da resposta
+        // no JavaScript do cliente se a requisição for bem-sucedida (status 2xx).
+        // A confirmação de sucesso é feita de forma otimista ou por outros meios.
+        const response = await fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors', // Importante para interagir com Apps Script desta forma para 'add'
+            cache: 'no-cache',
+            headers: { 
+                // 'Content-Type': 'application/json' // Removido para 'no-cors' com 'text/plain' no Apps Script
+            },
+            // Para 'no-cors', o corpo deve ser uma string simples ou FormData.
+            // O Apps Script precisa ser ajustado para parsear `e.postData.contents` como stringified JSON.
+            body: JSON.stringify(produto) // O Apps Script deve fazer JSON.parse(e.postData.contents)
+        });
+
+        console.log("Produto e imagens enviados (status da requisição 'no-cors' não é diretamente legível):", produto);
+        alert('Produto cadastrado com sucesso! A lista será atualizada em breve.');
+        
+        // Limpa os campos e a lista de imagens a adicionar
+        document.getElementById('inputProdutoNome').value = '';
+        document.getElementById('inputProdutoPreco').value = '';
+        document.getElementById('inputProdutoPeso').value = '';
+        document.getElementById('inputProdutoAltura').value = '';
+        document.getElementById('inputProdutoLargura').value = '';
+        document.getElementById('inputProdutoComprimento').value = '';
+        imagesToAdd = []; // Limpa o array de imagens (geprodutos.js)
+        displayImagesToAdd(); // Atualiza a exibição das imagens a adicionar (geprodutos.js)
+
+        // Recarrega os produtos para atualizar a tabela
+        loadUserProducts();
+
+    } catch (error) {
+        console.error('Erro ao adicionar produto:', error);
+        alert(`Falha ao enviar produto: ${error.message}`);
+    } finally {
+        isSubmitting = false;
+        btn.classList.remove('disabled'); // Remove a classe
+        btn.innerHTML = originalContent; // Restaura o conteúdo original do botão
+    }
+});
+</script>
+
+<script>
+// === NOVO SCRIPT PARA CARREGAR E EXIBIR PRODUTOS ===
+
+/**
+ * Torna um elemento de slider arrastável horizontalmente.
+ * @param {HTMLElement} slider - O elemento do DOM que atuará como slider.
+ */
+function makeSliderDraggable(sliderElement) {
+    if (!sliderElement) return;
+    let isDown = false;
+    let startX, scrollStart;
+
+    sliderElement.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        sliderElement.classList.add('active');
+        try { // Adicionado try-catch para setPointerCapture
+            sliderElement.setPointerCapture(e.pointerId);
+        } catch (error) {
+            console.warn("setPointerCapture não suportado ou erro:", error);
+        }
+        startX = e.clientX;
+        scrollStart = sliderElement.scrollLeft;
+        e.preventDefault(); // Evita seleção de texto ou "ghost image"
+    });
+
+    sliderElement.addEventListener('pointerleave', () => { // Também 'pointerup' fora do elemento
+        if (isDown) {
+            isDown = false;
+            sliderElement.classList.remove('active');
+            try { // Adicionado try-catch para releasePointerCapture
+                 // sliderElement.releasePointerCapture(e.pointerId); // e.pointerId não está disponível aqui
+            } catch (error) {
+                // console.warn("releasePointerCapture não suportado ou erro:", error);
+            }
+        }
+    });
+    
+    sliderElement.addEventListener('pointerup', (e) => {
+        isDown = false;
+        sliderElement.classList.remove('active');
+        try { // Adicionado try-catch para releasePointerCapture
+            sliderElement.releasePointerCapture(e.pointerId);
+        } catch (error) {
+            // console.warn("releasePointerCapture não suportado ou erro:", error);
+        }
+    });
+
+    sliderElement.addEventListener('pointermove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const walk = (e.clientX - startX) * 1.5; // Ajuste a sensibilidade aqui
+        sliderElement.scrollLeft = scrollStart - walk;
+    });
+}
+
+
+/**
+ * Exibe os produtos na tabela 'Tabeladeprodutos'.
+ * @param {Array<Object>} products - Um array de objetos de produto.
+ */
+function displayProductsInTable(products) {
+    const table = document.getElementById('Tabeladeprodutos');
+    if (!table) {
+        console.error("Elemento 'Tabeladeprodutos' não encontrado.");
+        return;
+    }
+
+    let tbody = table.querySelector('tbody');
+    if (!tbody) {
+        tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+    }
+    tbody.innerHTML = ''; // Limpa quaisquer produtos existentes
+
+    if (!products || products.length === 0) {
+        const tr = tbody.insertRow();
+        const cell = tr.insertCell();
+        cell.colSpan = 4; // Número de colunas na tabela
+        cell.textContent = 'Nenhum produto encontrado para este usuário.';
+        cell.style.textAlign = 'center';
+        return;
+    }
+
+    products.forEach(product => {
+        const tr = tbody.insertRow();
+
+        // 1. Célula de Imagens (Carrossel)
+        const imgCell = tr.insertCell();
+        imgCell.style.width = "40%"; // Definido no thead
+        const carouselDiv = document.createElement('div');
+        carouselDiv.className = 'product-image-carousel';
+        
+        if (product.IMAGENS && typeof product.IMAGENS === 'string') {
+            const imageUrls = product.IMAGENS.split(',').map(url => url.trim()).filter(url => url);
+            if (imageUrls.length > 0) {
+                imageUrls.forEach(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.alt = `Imagem de ${product.NOME || 'Produto'}`;
+                    img.onerror = function() { this.src = 'https://placehold.co/100x100/ff0000/ffffff?text=Erro!'; this.alt = 'Erro ao carregar imagem';};
+                    carouselDiv.appendChild(img);
+                });
+            } else {
+                carouselDiv.textContent = 'Sem imagens';
+            }
+        } else {
+            carouselDiv.textContent = 'Sem imagens';
+        }
+        imgCell.appendChild(carouselDiv);
+        makeSliderDraggable(carouselDiv); // Aplica a funcionalidade de arrastar
+
+        // 2. Célula de Nome
+        const nameCell = tr.insertCell();
+        nameCell.style.width = "30%"; // Definido no thead
+        nameCell.textContent = product.NOME || 'N/A';
+
+        // 3. Célula de Preço
+        const priceCell = tr.insertCell();
+        priceCell.style.width = "15%"; // Definido no thead
+        priceCell.textContent = product.PRECO ? `R$ ${parseFloat(product.PRECO).toFixed(2)}` : 'N/A';
+
+        // 4. Célula de Ações
+        const actionsCell = tr.insertCell();
+        actionsCell.style.width = "15%"; // Definido no thead
+        
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Editar';
+        editButton.className = 'action-button';
+        editButton.onclick = () => {
+            // Implementar lógica de edição - pode preencher o formulário de edição acima
+            console.log('Editar produto:', product.ID_PRODUTO, product);
+            alert(`Editar produto: ${product.NOME} (ID: ${product.ID_PRODUTO}). Funcionalidade a ser implementada.`);
+        };
+        actionsCell.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Excluir';
+        deleteButton.className = 'action-button';
+        deleteButton.onclick = async () => {
+            // Implementar lógica de exclusão
+            console.log('Excluir produto:', product.ID_PRODUTO);
+            if (confirm(`Tem certeza que deseja excluir o produto "${product.NOME}"?`)) {
+                await deleteProductOnServer(product.ID_PRODUTO);
+            }
+        };
+        actionsCell.appendChild(deleteButton);
+    });
+}
+
+/**
+ * Função para deletar produto no servidor (Google Apps Script)
+ * @param {string} productId - O ID do produto a ser deletado.
+ */
+async function deleteProductOnServer(productId) {
+    if (!window.decodedToken || !window.decodedToken.sub) {
+        alert("Usuário não autenticado. Não é possível excluir o produto.");
+        return;
+    }
+     if (!productId) {
+        alert("ID do produto não fornecido.");
+        return;
+    }
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
+    const payload = {
+        action: "delete",
+        PRODUCT_ID: productId,
+        // GOGOID: window.decodedToken.sub // O script .gs pode validar se o usuário tem permissão, mas a ação delete é por PRODUCT_ID
+    };
+
+    try {
+        const response = await fetch(scriptURL, {
+            method: 'POST',
+            // mode: 'cors', // Se o Apps Script estiver configurado para retornar JSON e CORS headers
+            // headers: { 'Content-Type': 'application/json', },
+            // body: JSON.stringify(payload)
+
+            // Usando 'no-cors' para consistência com 'add', assumindo que o Apps Script pode não retornar
+            // CORS headers para leitura de resposta, mas a ação será executada.
+            // Se você configurou o Apps Script para retornar JSON e CORS, pode usar o modo 'cors'.
+            mode: 'no-cors',
+            body: JSON.stringify(payload) // Apps Script deve fazer JSON.parse(e.postData.contents)
+        });
+
+        // Com 'no-cors', não podemos ler a resposta. Assumimos sucesso se não houver erro de rede.
+        alert(`Produto "${productId}" excluído (ou solicitação enviada). A lista será atualizada.`);
+        loadUserProducts(); // Recarrega a lista de produtos
+    } catch (error) {
+        console.error('Erro ao excluir produto:', error);
+        alert(`Falha ao excluir produto: ${error.message}`);
+    }
+}
+
+
+/**
+ * Carrega os produtos do usuário do Google Apps Script.
+ */
+async function loadUserProducts() {
+    if (!window.decodedToken || !window.decodedToken.sub) {
+        console.warn("Token de usuário (GOGOID) não encontrado. Aguardando login...");
+        // Poderia adicionar um spinner de carregamento na tabela aqui
+        const tableBody = document.querySelector('#Tabeladeprodutos tbody');
+        if (tableBody) {
+            tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Carregando seus produtos... <div class="loading-spinner" style="display:inline-block; vertical-align:middle;"></div></td></tr>';
+        }
+        return;
+    }
+
+    const gogoId = window.decodedToken.sub;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
+    
+    const payload = {
+        action: "load",
+        GOGOID: gogoId
+    };
+
+    try {
+        const response = await fetch(scriptURL, {
+            method: 'POST', // Apps Script doPost espera POST
+            // O Apps Script para 'load' DEVE retornar JSON e ter CORS habilitado para ler a resposta.
+            // Se o Apps Script estiver configurado para retornar ContentService.MimeType.JSON,
+            // ele geralmente lida com CORS para requisições GET e POST simples.
+            // Não especificamos 'mode: cors' explicitamente, pois é o padrão para fetch,
+            // mas é crucial que o Apps Script esteja configurado corretamente.
+            headers: {
+                'Content-Type': 'application/json', // Informa ao servidor que estamos enviando JSON
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            // Se a resposta não for OK (ex: 404, 500), tenta ler o erro se possível
+            let errorText = `Erro HTTP: ${response.status}`;
+            try {
+                const errorData = await response.text(); // Tenta ler como texto
+                console.error("Erro do servidor (texto):", errorData);
+                errorText += ` - ${errorData.substring(0,100)}`; // Mostra parte da mensagem de erro
+            } catch (e) { /* não conseguiu ler o corpo do erro */ }
+            throw new Error(errorText);
+        }
+
+        const data = await response.json(); // Espera uma resposta JSON
+
+        if (data.status === 'success') {
+            displayProductsInTable(data.products);
+        } else {
+            console.error('Falha ao carregar produtos:', data.message);
+            const tableBody = document.querySelector('#Tabeladeprodutos tbody');
+            if (tableBody) {
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Falha ao carregar produtos: ${data.message}</td></tr>`;
+            }
+        }
+    } catch (error) {
+        console.error('Erro na requisição para carregar produtos:', error);
+        const tableBody = document.querySelector('#Tabeladeprodutos tbody');
+        if (tableBody) {
+            tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Erro ao conectar com o servidor: ${error.message}</td></tr>`;
+        }
+    }
+}
+
+// Tenta carregar os produtos quando o DOM estiver pronto e o login.js (provavelmente) já tiver rodado.
+// login.js usa 'window.load', então 'DOMContentLoaded' pode ser um pouco antes.
+// Usaremos 'window.load' para garantir que login.js teve chance de definir window.decodedToken.
+window.addEventListener('load', () => {
+    // Verifica se o token já está disponível. Se não, login.js pode estar redirecionando ou falhou.
+    if (window.decodedToken && window.decodedToken.sub) {
+        loadUserProducts();
+    } else {
+        // Se o token não estiver pronto, login.js deve lidar com o redirecionamento.
+        // Podemos tentar novamente após um pequeno atraso, caso login.js ainda esteja processando.
+        console.log("Token não disponível imediatamente no 'load'. login.js deve tratar ou redirecionar.");
+        // Opcional: adicionar uma mensagem na tabela de produtos indicando que o login é necessário.
+        const tableBody = document.querySelector('#Tabeladeprodutos tbody');
+        if (tableBody && (!tableBody.innerHTML || tableBody.innerHTML.includes('Carregando'))) {
+             tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Login necessário para ver os produtos. Verificando...</td></tr>';
+        }
+        // O script login.js já redireciona se não houver token, então não precisamos de um loop aqui.
+        // Apenas garantimos que, se o token ESTIVER lá, carregamos os produtos.
+    }
+
+    // Adiciona o carrossel ao container de adicionar imagens também
+    const imagesToAddSlider = document.getElementById('container_imagens_adicionar');
+    if (imagesToAddSlider) {
+        makeSliderDraggable(imagesToAddSlider);
+    }
+});
+
+// Adicional: Se o login.js despachar um evento customizado 'userReady' após o login
+window.addEventListener('userReady', (event) => {
+    console.log("Evento 'userReady' recebido. Carregando produtos.");
+    loadUserProducts();
+});
+
+
+</script>
+
+</body>
+</html>
