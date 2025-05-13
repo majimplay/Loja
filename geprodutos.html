@@ -8,6 +8,27 @@
 	<link rel="stylesheet" type="text/css" href="estilos/geprodutos_html.css?h=ae68fce6">
    <link rel="stylesheet" href="estilos/cabecaio.css">
     <style>
+    .loading-spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #A2BF3F;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    #btnAdicionarProduto.disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
     </style>
 </head>
 <body>
@@ -216,9 +237,18 @@
     <script src="scripts/login.js"></script>
     <script src="scripts/geprodutos.js"></script>
 <script>
-// === Script para Adicionar Produto (CORS) ===
+// === Script para Adicionar Produto (no-CORS) ===
+	let isSubmitting = false;
 document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
+ if (isSubmitting) return;
+    
+    const btn = document.getElementById('btnAdicionarProduto');
+    const originalContent = btn.innerHTML;
+
     try {
+	isSubmitting = true;
+        btn.classList.add('disabled');
+        btn.innerHTML = 'Enviando... <div class="loading-spinner"></div>';
         // Passo 1: Enviar imagens para o ImgBB e coletar URLs
         const imageUrls = [];
         for (const imageData of imagesToAdd) {
