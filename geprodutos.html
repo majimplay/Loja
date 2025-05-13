@@ -218,50 +218,46 @@
 <script>
 // === Script para Adicionar Produto (CORS) ===
 document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
-    // Passo 1: Enviar imagens para o ImgBB e coletar URLs
-    const imageUrls = [];
-    for (const imageData of imagesToAdd) {
-        const url = await uploadImageToImgBB(imageData);
-        if (url) imageUrls.push(url);
-    }
-const produto = {
-    action: "add",
-    productData: { // ← Adicione esta camada!
-        GOGOID: window.decodedToken?.sub,
-        NOME: document.getElementById('inputProdutoNome').value,
-        PRECO: document.getElementById('inputProdutoPreco').value,
-        PESO: document.getElementById('inputProdutoPeso').value,
-        ALTURA: document.getElementById('inputProdutoAltura').value,
-        LARGURA: document.getElementById('inputProdutoLargura').value,
-        COMPRIMENTO: document.getElementById('inputProdutoComprimento').value,
-	    IMAGENS: imageUrls.join(', ') // URLs separadas por vírgula
-    }
-};
+    try {
+        // Passo 1: Enviar imagens para o ImgBB e coletar URLs
+        const imageUrls = [];
+        for (const imageData of imagesToAdd) {
+            const url = await uploadImageToImgBB(imageData);
+            if (url) imageUrls.push(url);
+        }
 
- //   if (!produto.nome || !produto.preco) {
-   //     alert("Preencha nome e preço do produto!");
-     //   return;
-  //    mode: 'no-cors', }
+        const produto = {
+            action: "add",
+            productData: {
+                GOGOID: window.decodedToken?.sub,
+                NOME: document.getElementById('inputProdutoNome').value,
+                PRECO: document.getElementById('inputProdutoPreco').value,
+                PESO: document.getElementById('inputProdutoPeso').value,
+                ALTURA: document.getElementById('inputProdutoAltura').value,
+                LARGURA: document.getElementById('inputProdutoLargura').value,
+                COMPRIMENTO: document.getElementById('inputProdutoComprimento').value,
+                IMAGENS: imageUrls.join(', ')
+            }
+        };
 
-   try {
+        // Validação básica (descomente se necessário)
+      
+
         const response = await fetch('SUA_URL_DO_APPS_SCRIPT', {
             method: 'POST',
-	    mode: 'no-cors',
+            mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(produto)
         });
+
         console.log("Produto e imagens enviados:", produto);
         alert('Produto cadastrado com sucesso!');
-        imagesToAdd = []; // Limpa as imagens após o envio
-        displayImagesToAdd(); // Atualiza a exibição
+        imagesToAdd = [];
+        displayImagesToAdd();
+
     } catch (error) {
         console.error('Erro:', error);
         alert('Falha ao enviar produto.');
-    }
-});
-    } catch (error) {
-        console.error('Erro:', error);
-        alert(`Falha ao adicionar: ${error.message}`);
     }
 });
 	</script>
