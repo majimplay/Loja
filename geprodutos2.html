@@ -216,9 +216,18 @@
     <script src="scripts/login.js"></script>
     <script src="scripts/geprodutos.js"></script>
 <script>
-// === Script para Adicionar Produto (CORS) ===
+// === Script para Adicionar Produto (no-CORS) ===
+	let isSubmitting = false;
 document.getElementById('btnAdicionarProduto').addEventListener('click', async () => {
+ if (isSubmitting) return;
+    
+    const btn = document.getElementById('btnAdicionarProduto');
+    const originalContent = btn.innerHTML;
+
     try {
+	isSubmitting = true;
+        btn.classList.add('disabled');
+        btn.innerHTML = 'Enviando... <div class="loading-spinner"></div>';
         // Passo 1: Enviar imagens para o ImgBB e coletar URLs
         const imageUrls = [];
         for (const imageData of imagesToAdd) {
@@ -258,6 +267,10 @@ document.getElementById('btnAdicionarProduto').addEventListener('click', async (
     } catch (error) {
         console.error('Erro:', error);
         alert('Falha ao enviar produto.');
+  } finally {
+        isSubmitting = false;
+        btn.classList.remove('disabled');
+        btn.innerHTML = originalContent;
     }
 });
 	</script>
