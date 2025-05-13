@@ -476,7 +476,7 @@ async function deleteProductOnServer(productId) {
     try {
         const response = await fetch(SCRIPT_URL, { // Usa a constante SCRIPT_URL
             method: 'POST',
-            mode: 'cors', // MUDANÇA: Usar 'cors'
+            mode: 'no-cors', // MUDANÇA: Usar 'cors'
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
@@ -528,7 +528,7 @@ async function loadUserProducts() {
     try {
         const response = await fetch(SCRIPT_URL, { // Usa a constante SCRIPT_URL
             method: 'POST', 
-            mode: 'cors', // MUDANÇA: Garantir que está usando 'cors' (que é o padrão, mas explícito é bom)
+            mode: 'no-cors', // MUDANÇA: Garantir que está usando 'cors' (que é o padrão, mas explícito é bom)
             headers: {
                 'Content-Type': 'application/json', 
             },
