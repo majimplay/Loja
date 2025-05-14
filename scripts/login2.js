@@ -101,8 +101,6 @@
             if (logoutButton) {
                 logoutButton.addEventListener('click', logout);
             }
-        });
-
 
 // === Carregar Produtos ao Iniciar ===
 document.addEventListener('DOMContentLoaded', async () => {
@@ -149,6 +147,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Erro ao carregar produtos:', error);
     }
 });
+
+         
+
+
+         
+        });//fecha window load
+
+
+
 
 
 
