@@ -102,3 +102,56 @@
                 logoutButton.addEventListener('click', logout);
             }
         });
+
+
+// === Carregar Produtos ao Iniciar ===
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const gogoid = window.decodedToken?.sub;
+        if (!gogoid) return;
+         console.log("gogoid=",gogoid);
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`, {
+            method: 'GET',
+            mode: 'no-cors'
+        });
+
+        const produtos = await response.json();
+        const tabela = document.getElementById('Tabeladeprodutos');
+
+        // Limpar linhas existentes (exceto cabeçalho)
+        while(tabela.rows.length > 1) tabela.deleteRow(1);
+
+        // Popular tabela
+        produtos.forEach(produto => {
+            const newRow = tabela.insertRow(-1);
+            
+            // Colunas (ajuste conforme seu layout)
+            newRow.innerHTML = `
+                <td width="74%">
+                    <div class="textstyle5">
+                        ${produto.IMAGENS.split(', ').map(img => `<img src="${img}" style="height:50px; margin:2px;">`).join('')}
+                    </div>
+                </td>
+                <td width="10%">${produto.NOME}</td>
+                <td width="8%">R$ ${produto.PRECO}</td>
+                <td width="7%">
+                    <div class="acoes-container">
+                        <div class="btnMoverCima">🔺</div>
+                        <div class="btnMoverBaixo">🔻</div>
+                        <div class="btnEditar">✏️</div>
+                        <div class="btnExcluir">🗑️</div>
+                    </div>
+                </td>
+            `;
+        });
+
+    } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+    }
+});
+</script>
+
+
+
+
+
