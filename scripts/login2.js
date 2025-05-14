@@ -75,7 +75,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste1 - Evento load disparado");
+    console.log("teste123 - Evento load disparado");
     
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -99,7 +99,7 @@
 
                     const response = await fetch(
                         `https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`,
-                        { method: 'GET', mode: 'cors' }
+                        { method: 'GET', mode: 'no-cors' }
                     );
 
                     console.log("Resposta do servidor:", response);
