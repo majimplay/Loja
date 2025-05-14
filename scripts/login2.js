@@ -137,7 +137,7 @@
                                 const imgCell = newRow.insertCell(-1);
                                 imgCell.style.verticalAlign = 'top';
                                 imgCell.style.overflow = 'hidden';
-                                imgCell.width = '74%'; // Ajuste as larguras conforme seu CSS
+                                imgCell.width = '74%'; // Ajuste as larguras conforme seu CSSol-´~b 0pBÇ:P:`^
 
                                 const imgContainer = document.createElement('div');
                                 // Use uma classe para os contêineres de imagem de produtos carregados
@@ -176,10 +176,10 @@
 
                                 // Adiciona os botões de ação (replicando a estrutura HTML)
                                 acoesCell.innerHTML = `
-                                    <div class="btnMoverCima">🔺</div>
-                                    <div class="btnMoverBaixo">🔻</div>
-                                    <div class="btnEditar">✏️</div>
-                                    <div class="btnExcluir">🗑️</div>
+                                      <div class="btnMoverCima buttonStyle">🔺</div>
+                                      <div class="btnMoverBaixo buttonStyle">🔻</div>
+                                      <div class="btnEditar buttonStyle">✏️ Editar</div>
+                                      <div class="btnExcluir buttonStyle">🗑️ Excluir</div>
                                 `;
 
                                 // Opcional: Adicionar event listeners aos botões de ação aqui ou usar delegação de eventos no tbody
