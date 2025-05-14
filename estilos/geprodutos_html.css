@@ -122,11 +122,11 @@ body { background-color:#400080; padding:0;  margin: 0; }
 #cell_6fbd9cc7 {  }
 #inputListaProdutoPreco { box-sizing: border-box; vertical-align: bottom; position:relative; display: inline-block; width:66px; height:30px; background:none; border: 1px solid #A0A0A0; font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000;  }
 #cell_8033757 {  }
-#btnMoverCima { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 100px 100px 0px 0px; position:relative; display: inline-block; width:53px; height:40px; background-color:#6654C0; border: 4px solid #404040;  }
+.btnMoverCima { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 100px 100px 0px 0px; position:relative; display: inline-block; width:53px; height:40px; background-color:#6654C0; border: 4px solid #404040;  }
 #btnMoverCima:hover{background-color: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
-#btnMoverBaixo { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 0px 0px 100px 100px; position:relative; display: inline-block; width:53px; height:40px; background-color:#6654C0; border: 4px solid #404040;  }
-#btnMoverBaixo:hover{background-color: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
-#btnEditarProduto { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 9px; position:relative; display: inline-block; width:59px; height:40px; background-color:#5A4ABC; background: linear-gradient(to bottom,#5A4ABC, #282154 50%, #1F1941 50%, #16122F); border: 2px solid #2F2759;  }
-#btnEditarProduto:hover{background: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
-#btnExcluirProduto { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 9px; position:relative; display: inline-block; width:58px; height:18px; background-color:#FF0080; background: linear-gradient(to bottom,#FF0080, #720039 50%, #59002C 50%, #3F0020); border: 2px solid #2F2759;  }
-#btnExcluirProduto:hover{background: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
+.btnMoverBaixo { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 0px 0px 100px 100px; position:relative; display: inline-block; width:53px; height:40px; background-color:#6654C0; border: 4px solid #404040;  }
+.btnMoverBaixo:hover{background-color: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
+.btnEditarProduto { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 9px; position:relative; display: inline-block; width:59px; height:40px; background-color:#5A4ABC; background: linear-gradient(to bottom,#5A4ABC, #282154 50%, #1F1941 50%, #16122F); border: 2px solid #2F2759;  }
+.btnEditarProduto:hover{background: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
+.btnExcluirProduto { cursor: pointer; transition: background-color 3.0s ease;  box-sizing: border-box; vertical-align: bottom; border-radius: 9px; position:relative; display: inline-block; width:58px; height:18px; background-color:#FF0080; background: linear-gradient(to bottom,#FF0080, #720039 50%, #59002C 50%, #3F0020); border: 2px solid #2F2759;  }
+.btnExcluirProduto:hover{background: #8aab30; box-shadow: 0 0 8px rgba(138, 171, 48, 0.6);}
