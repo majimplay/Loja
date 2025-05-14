@@ -75,7 +75,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   4444    - Evento load disparado");
+    console.log("teste   5555    - Evento load disparado");
     
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -96,11 +96,18 @@
                         console.error("GOGOID não encontrado!");
                         return;
                     }
-
-                    const response = await fetch(
-                        `https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`,
-                        { method: 'GET', mode: 'no-cors' }
-                    );
+                 const response = await fetch(
+    `https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec`,
+    {
+        method: 'POST',
+        mode: 'no-cors' 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'load',
+            GOGOID: gogoid
+        })
+    }
+);
 
                     console.log("Resposta do servidor:", response);
                     const produtos = await response.json();
