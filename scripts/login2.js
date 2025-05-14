@@ -75,6 +75,7 @@
 
         // --- Inicialização da Página ---
         window.addEventListener('load', () => {
+         console.log("teste1");
             const storedToken = localStorage.getItem(USER_DATA_KEY);
 
             if (storedToken) {
