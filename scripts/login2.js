@@ -75,7 +75,7 @@
 
         // --- Inicialização da Página ---
         window.addEventListener('load', () => {
-         console.log("teste1");
+         console.log("teste2");
             const storedToken = localStorage.getItem(USER_DATA_KEY);
 
             if (storedToken) {
@@ -105,15 +105,16 @@
 
 // === Carregar Produtos ao Iniciar ===
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log("gogoid2=",gogoid);
     try {
         const gogoid = window.decodedToken?.sub;
-         console.log("gogoid=",gogoid);
+         console.log("gogoid3=",gogoid);
         if (!gogoid) return;
         const response = await fetch(`https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`, {
             method: 'GET',
             mode: 'cors'
         });
-  console.log("gogoid2=",gogoid);
+  console.log("gogoid4=",gogoid);
         const produtos = await response.json();
         const tabela = document.getElementById('Tabeladeprodutos');
 
