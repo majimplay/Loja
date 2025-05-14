@@ -74,13 +74,33 @@ body { background-color:#400080; padding:0;  margin: 0; }
 
 #container_imagens { box-sizing: border-box; vertical-align: top; position:relative; display: inline-block; width:100%; height:100%; background:none; border: 1px solid #404040;  }
 #container_imagens_padding { margin: 0px; display: block;  }
-#container_imagens {cursor: grab;  /* cursor mão aberta */height: 300px;/* fixa a altura   height: 300px; */ overflow-x: auto; /* habilita scroll apenas no eixo x */white-space: nowrap;      /* mantém todas as imagens numa só linha */ display: flex;            /* alinha as imagens verticalmente */ align-items: center;      /* centra as imagens na altura do container */}
+
 #container_imagens.active { cursor: grabbing;        /* cursor mão fechada enquanto arrasta */}
 .container_imagens { box-sizing: border-box; vertical-align: top; position:relative; display: inline-block; width:100%; height:100%; background:none; border: 1px solid #404040;  }
 .container_imagens_padding { margin: 0px; display: block;  }
 .container_imagens {cursor: grab;  /* cursor mão aberta */height: 300px;/* fixa a altura   height: 300px; */ overflow-x: auto; /* habilita scroll apenas no eixo x */white-space: nowrap;      /* mantém todas as imagens numa só linha */ display: flex;            /* alinha as imagens verticalmente */ align-items: center;      /* centra as imagens na altura do container */}
 .container_imagens.active { cursor: grabbing;        /* cursor mão fechada enquanto arrasta */}
 
+.product-images-carousel {
+    cursor: grab;
+    height: 100px; /* Altura reduzida para células */
+    overflow-x: auto;
+    display: flex !important;
+    gap: 8px;
+    padding: 5px;
+    scrollbar-width: thin;
+}
+
+.product-images-carousel.active {
+    cursor: grabbing;
+}
+
+.product-images-carousel img {
+    height: 90px;
+    width: auto;
+    border-radius: 4px;
+    object-fit: cover;
+}
 
 .image-scroll-container { display: inline-block; padding: 0px 0;}
 
