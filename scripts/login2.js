@@ -176,10 +176,10 @@
 
                                 // Adiciona os botões de ação (replicando a estrutura HTML)
                                 acoesCell.innerHTML = `
-                                      <div class="btnMoverCima buttonStyle">🔺</div>
-                                      <div class="btnMoverBaixo buttonStyle">🔻</div>
-                                      <div class="btnEditar buttonStyle">✏️ Editar</div>
-                                      <div class="btnExcluir buttonStyle">🗑️ Excluir</div>
+                                      <div class="btnMoverCima btnMoverCima">🔺</div>
+                                      <div class="btnMoverBaixo btnMoverBaixo">🔻</div>
+                                      <div class="btnEditar btnEditarProduto">✏️ Editar</div>
+                                      <div class="btnExcluir btnExcluirProduto">🗑️ Excluir</div>
                                 `;
 
                                 // Opcional: Adicionar event listeners aos botões de ação aqui ou usar delegação de eventos no tbody
