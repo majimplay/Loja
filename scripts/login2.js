@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Erro ao carregar produtos:', error);
     }
 });
-</script>
+
 
 
 
