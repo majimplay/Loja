@@ -75,8 +75,8 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   6666    - Evento load disparado");
-    
+    console.log("teste   99999    - Evento load disparado");
+
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
     // Verificação do Token
@@ -85,61 +85,92 @@
         if (decodedPayload) {
             updateUI(decodedPayload);
             statusMessageDiv.textContent = 'Sessão carregada localmente.';
-            
+
             // === Carregar Produtos APÓS validação do token ===
             (async () => {
                 try {
                     const gogoid = window.decodedToken?.sub;
                     console.log("gogoid3 (dentro do load):", gogoid);
-                    
+
                     if (!gogoid) {
                         console.error("GOGOID não encontrado!");
                         return;
                     }
-                 const response = await fetch(
-    `https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec`,
-    {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'load',
-            GOGOID: gogoid
-        })
-    }
-);
 
+                    // ** ALTERAÇÃO AQUI: Usando GET e os parâmetros corretos **
+                    // A URL deve incluir a action e o googleUserId como parâmetros de query
+                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec'; // Substitua pela URL CORRETA do seu script implantado
+                    const fetchUrl = `${scriptUrl}?action=getproductsbygogoid&googleUserId=${encodeURIComponent(gogoid)}`;
+
+                    const response = await fetch(fetchUrl); // Método padrão é GET
                     console.log("Resposta do servidor:", response);
-                    const produtos = await response.json();
-                    console.log("Produtos carregados:", produtos);
 
-                    // Popular tabela...
-                    const tabela = document.getElementById('Tabeladeprodutos');
-                    while(tabela.rows.length > 1) tabela.deleteRow(1);
-                    
-                    produtos.forEach(produto => {
-                        const newRow = tabela.insertRow(-1);
-                        newRow.innerHTML = `
-                            <td width="74%">
-                                <div class="textstyle5">
-                                    ${produto.IMAGENS.split(', ').map(img => `<img src="${img}" style="height:50px; margin:2px;">`).join('')}
-                                </div>
-                            </td>
-                            <td width="10%">${produto.NOME}</td>
-                            <td width="8%">R$ ${produto.PRECO}</td>
-                            <td width="7%">
-                                <div class="acoes-container">
-                                    <div class="btnMoverCima">🔺</div>
-                                    <div class="btnMoverBaixo">🔻</div>
-                                    <div class="btnEditar">✏️</div>
-                                    <div class="btnExcluir">🗑️</div>
-                                </div>
-                            </td>
-                        `;
-                    });
+                    // Verifica se a resposta é OK antes de tentar parsear como JSON
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Erro HTTP: ${response.status} - ${errorText}`);
+                    }
+
+                    const produtosResponse = await response.json(); // Espera um objeto JSON
+
+                    // Verifica o status dentro do payload JSON retornado pelo Google Apps Script
+                    if (produtosResponse.status === 'success') {
+                         const produtos = produtosResponse.productsData; // Acessa o array de produtos
+                         console.log("Produtos carregados:", produtos);
+
+                        // Popular tabela...
+                        const tabela = document.getElementById('Tabeladeprodutos');
+                        // Limpa todas as linhas exceto o cabeçalho
+                        while(tabela.rows.length > 1) {
+                            tabela.deleteRow(1);
+                        }
+
+                        if (produtos && produtos.length > 0) {
+                            produtos.forEach(produto => {
+                                const newRow = tabela.insertRow(-1);
+                                // Certifique-se de que os nomes das propriedades (produto.IMAGENS, produto.NOME, produto.PRECO)
+                                // correspondem exatamente aos cabeçalhos das colunas na sua planilha 'Produtos'
+                                newRow.innerHTML = `
+                                    <td width="74%">
+                                        <div class="textstyle5">
+                                            ${produto.IMAGENS ? String(produto.IMAGENS).split(',').map(img => `<img src="${img.trim()}" style="height:50px; margin:2px;">`).join('') : ''}
+                                        </div>
+                                    </td>
+                                    <td width="10%">${produto.NOME || ''}</td>
+                                    <td width="8%">R$ ${produto.PRECO || '0.00'}</td>
+                                    <td width="7%">
+                                        <div class="acoes-container">
+                                            <div class="btnMoverCima">🔺</div>
+                                            <div class="btnMoverBaixo">🔻</div>
+                                            <div class="btnEditar">✏️</div>
+                                            <div class="btnExcluir">🗑️</div>
+                                        </div>
+                                    </td>
+                                `;
+                            });
+                        } else {
+                             console.log("Nenhum produto encontrado para este usuário.");
+                             // Opcional: Adicionar uma linha na tabela indicando que não há produtos
+                             const newRow = tabela.insertRow(-1);
+                             newRow.innerHTML = `<td colspan="4" style="text-align:center;">Nenhum produto encontrado.</td>`;
+                        }
+
+                    } else {
+                        // Trata casos de 'not_found' ou outros erros reportados pelo script GAS
+                        console.warn("Erro ou status não sucesso retornado pelo script GAS:", produtosResponse.message);
+                         const tabela = document.getElementById('Tabeladeprodutos');
+                         while(tabela.rows.length > 1) tabela.deleteRow(1); // Limpa a tabela
+                         const newRow = tabela.insertRow(-1);
+                         newRow.innerHTML = `<td colspan="4" style="text-align:center;">${produtosResponse.message || 'Erro ao carregar produtos.'}</td>`;
+                    }
+
 
                 } catch (error) {
                     console.error('Erro ao carregar produtos:', error);
+                     const tabela = document.getElementById('Tabeladeprodutos');
+                     while(tabela.rows.length > 1) tabela.deleteRow(1); // Limpa a tabela
+                     const newRow = tabela.insertRow(-1);
+                     newRow.innerHTML = `<td colspan="4" style="text-align:center; color: red;">Erro ao carregar produtos: ${error.message}</td>`;
                 }
             })();
 
@@ -158,3 +189,5 @@
     }
 });// Fecha window.addEventListener('load')
 
+// Note: As funções jwtDecode, updateUI, logout devem estar definidas globalmente ou acessíveis neste escopo.
+// Certifique-se de que a variável 'gogoid' está sendo corretamente obtida do token decodificado.
