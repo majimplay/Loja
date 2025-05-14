@@ -75,7 +75,7 @@
 
         // --- Inicialização da Página ---
         window.addEventListener('load', () => {
-         console.log("teste3");
+         console.log("teste1");
             const storedToken = localStorage.getItem(USER_DATA_KEY);
 
             if (storedToken) {
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!gogoid) return;
         const response = await fetch(`https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`, {
             method: 'GET',
-            mode: 'no-cors'
+            mode: 'cors'
         });
   console.log("gogoid2=",gogoid);
         const produtos = await response.json();
