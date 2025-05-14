@@ -92,7 +92,7 @@
     // ========================================================================
     function applyCarousel(sliderElement) {
         if (!sliderElement) {
-            console.error("Elemento do carrossel não encontrado.");
+            console.error("Elemento do carrossel não fornecido.");
             return;
         }
 
@@ -130,7 +130,8 @@
           sliderElement.classList.remove('active');
           sliderElement.releasePointerCapture(e.pointerId);
         });
-         Logger.log(`Carrossel aplicado ao elemento: ${sliderElement.id || sliderElement.className}`);
+         // CORRIGIDO: Usando console.log em vez de Logger.log
+         console.log(`Carrossel aplicado ao elemento: ${sliderElement.id || sliderElement.className}`);
     }
     // ========================================================================
     // FIM FUNÇÃO REUTILIZÁVEL PARA CARROSSEL
@@ -165,7 +166,8 @@ async function uploadImageToImgBB(imageData) {
         const data = await response.json();
 
         if (data && data.data && data.data.url) {
-             Logger.log(`Imagem enviada com sucesso para: ${data.data.url}`);
+             // CORRIGIDO: Usando console.log em vez de Logger.log
+             console.log(`Imagem enviada com sucesso para: ${data.data.url}`);
              return data.data.url; // Retorna a URL da imagem
         } else {
              console.error('Erro no retorno da API ImgBB:', data);
