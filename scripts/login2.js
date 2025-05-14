@@ -108,8 +108,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const gogoid = window.decodedToken?.sub;
-        if (!gogoid) return;
          console.log("gogoid=",gogoid);
+        if (!gogoid) return;
         const response = await fetch(`https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`, {
             method: 'GET',
             mode: 'no-cors'
