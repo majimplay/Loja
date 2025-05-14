@@ -182,33 +182,56 @@ async function uploadImageToImgBB(imageData) {
 
     // Função para carregar imagens salvas em um contêiner específico
     // Esta função será chamada pelo login2.js para popular os contêineres de imagem na tabela
-    function loadImagesIntoContainer(containerElement, imageUrls) {
-         if (!containerElement) {
-             console.error("Contêiner de imagens não fornecido.");
-             return;
-         }
-         containerElement.innerHTML = ''; // Limpa o conteúdo atual
+  function loadImagesIntoContainer(containerElement, imageUrls) {
+    if (!containerElement) {
+        console.error("Contêiner de imagens não fornecido.");
+        return;
+    }
+    
+    // Limpa o conteúdo atual do contêiner
+    containerElement.innerHTML = ''; 
 
-         if (imageUrls && imageUrls.length > 0) {
-             // Garante que imageUrls é um array, mesmo que venha como string separada por vírgula
-             const urls = Array.isArray(imageUrls) ? imageUrls : String(imageUrls).split(',').map(url => url.trim());
+    if (imageUrls) {
+        // Converte para array caso seja uma string separada por vírgulas
+        const urls = Array.isArray(imageUrls) ? imageUrls : String(imageUrls).split(',').map(url => url.trim());
+        
+        urls.forEach(url => {
+            if (url) { // Ignora URLs vazias
+                const imgElement = document.createElement('img');
+                imgElement.src = url;
+                
+                // === CORREÇÃO: Adiciona classes para estilização e carrossel ===
+                imgElement.classList.add('scroll-image', 'carousel-image'); 
+                
+                // === CORREÇÃO: Define atributos para acessibilidade ===
+                imgElement.alt = 'Imagem do produto';
+                imgElement.loading = 'lazy'; // Otimização de carregamento
+                
+                containerElement.appendChild(imgElement);
+            }
+        });
 
-             urls.forEach(url => {
-                 if (url) { // Verifica se a URL não está vazia após o split/trim
-                     const imgElement = document.createElement('img');
-                     imgElement.src = url;
-                     imgElement.classList.add('scroll-image'); // Reutiliza a classe de estilo do carrossel
-                     containerElement.appendChild(imgElement);
-                 }
-             });
-             // Aplica o carrossel ao contêiner após carregar as imagens
-             applyCarousel(containerElement); // Chama a função reutilizável
-         } else {
-             // Opcional: exibir uma mensagem ou placeholder se não houver imagens salvas
-              containerElement.innerHTML = '<span class="no-images-message">Sem imagens</span>';
-         }
-     }
+        // === CORREÇÃO: Aplica o carrossel após 50ms (tempo para renderização) ===
+        if (urls.length > 0) {
+            setTimeout(() => {
+                if (window.applyCarousel) {
+                    window.applyCarousel(containerElement);
+                } else {
+                    console.error("Função applyCarousel não encontrada!");
+                }
+            }, 50);
+        }
+    } else {
+        // === CORREÇÃO: Mensagem estilizada para "Sem imagens" ===
+        const placeholder = document.createElement('div');
+        placeholder.className = 'no-images-message';
+        placeholder.textContent = 'Sem imagens cadastradas';
+        containerElement.appendChild(placeholder);
+    }
 
+    // === CORREÇÃO: Garante que o container tenha a classe do carrossel ===
+    containerElement.classList.add('product-images-carousel');
+}
     // Ao carregar a página, aplica o carrossel ao contêiner de imagens a serem adicionadas
     // O carrossel para container_imagens (imagens salvas) será aplicado pelo login2.js
     // após carregar os dados do produto.
