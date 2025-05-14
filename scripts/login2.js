@@ -74,93 +74,80 @@
         }
 
         // --- Inicialização da Página ---
-        window.addEventListener('load', () => {
-         console.log("teste3");
-            const storedToken = localStorage.getItem(USER_DATA_KEY);
+   window.addEventListener('load', () => {
+    console.log("teste1 - Evento load disparado");
+    
+    const storedToken = localStorage.getItem(USER_DATA_KEY);
 
-            if (storedToken) {
-                const decodedPayload = jwtDecode(storedToken);
-                if (decodedPayload) {
-                    // Usuário está logado e token é válido
-                    updateUI(decodedPayload);
-                    if(statusMessageDiv) statusMessageDiv.textContent = 'Sessão carregada localmente.';
-                } else {
-                    // Token inválido ou expirado
-                    if(statusMessageDiv) statusMessageDiv.textContent = 'Sessão inválida ou expirada. Redirecionando...';
-                    logout(); // Limpa o token inválido e redireciona
-                }
-            } else {
-                // Usuário não está logado
-                if(statusMessageDiv) statusMessageDiv.textContent = 'Nenhuma sessão encontrada. Redirecionando para login...';
-                // Atraso para o usuário ver a mensagem antes de redirecionar (opcional)
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            }
-
-            // Adiciona listener para o botão de logout
-            if (logoutButton) {
-                logoutButton.addEventListener('click', logout);
-            }
-
-// === Carregar Produtos ao Iniciar ===
-document.addEventListener('DOMContentLoaded', async () => {
-  console.log("gogoid2=",gogoid);
-    try {
-        const gogoid = window.decodedToken?.sub;
-         console.log("gogoid3=",gogoid);
-        if (!gogoid) return;
-        const response = await fetch(`https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`, {
-            method: 'GET',
-            mode: 'cors'
-        });
-  console.log("gogoid4=",gogoid);
-        const produtos = await response.json();
-        const tabela = document.getElementById('Tabeladeprodutos');
-
-        // Limpar linhas existentes (exceto cabeçalho)
-        while(tabela.rows.length > 1) tabela.deleteRow(1);
-
-        // Popular tabela
-        produtos.forEach(produto => {
-            const newRow = tabela.insertRow(-1);
+    // Verificação do Token
+    if (storedToken) {
+        const decodedPayload = jwtDecode(storedToken);
+        if (decodedPayload) {
+            updateUI(decodedPayload);
+            statusMessageDiv.textContent = 'Sessão carregada localmente.';
             
-            // Colunas (ajuste conforme seu layout)
-            newRow.innerHTML = `
-                <td width="74%">
-                    <div class="textstyle5">
-                        ${produto.IMAGENS.split(', ').map(img => `<img src="${img}" style="height:50px; margin:2px;">`).join('')}
-                    </div>
-                </td>
-                <td width="10%">${produto.NOME}</td>
-                <td width="8%">R$ ${produto.PRECO}</td>
-                <td width="7%">
-                    <div class="acoes-container">
-                        <div class="btnMoverCima">🔺</div>
-                        <div class="btnMoverBaixo">🔻</div>
-                        <div class="btnEditar">✏️</div>
-                        <div class="btnExcluir">🗑️</div>
-                    </div>
-                </td>
-            `;
-        });
+            // === Carregar Produtos APÓS validação do token ===
+            (async () => {
+                try {
+                    const gogoid = window.decodedToken?.sub;
+                    console.log("gogoid3 (dentro do load):", gogoid);
+                    
+                    if (!gogoid) {
+                        console.error("GOGOID não encontrado!");
+                        return;
+                    }
 
-    } catch (error) {
-        console.error('Erro ao carregar produtos:', error);
+                    const response = await fetch(
+                        `https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec?action=get&gogoid=${encodeURIComponent(gogoid)}`,
+                        { method: 'GET', mode: 'cors' }
+                    );
+
+                    console.log("Resposta do servidor:", response);
+                    const produtos = await response.json();
+                    console.log("Produtos carregados:", produtos);
+
+                    // Popular tabela...
+                    const tabela = document.getElementById('Tabeladeprodutos');
+                    while(tabela.rows.length > 1) tabela.deleteRow(1);
+                    
+                    produtos.forEach(produto => {
+                        const newRow = tabela.insertRow(-1);
+                        newRow.innerHTML = `
+                            <td width="74%">
+                                <div class="textstyle5">
+                                    ${produto.IMAGENS.split(', ').map(img => `<img src="${img}" style="height:50px; margin:2px;">`).join('')}
+                                </div>
+                            </td>
+                            <td width="10%">${produto.NOME}</td>
+                            <td width="8%">R$ ${produto.PRECO}</td>
+                            <td width="7%">
+                                <div class="acoes-container">
+                                    <div class="btnMoverCima">🔺</div>
+                                    <div class="btnMoverBaixo">🔻</div>
+                                    <div class="btnEditar">✏️</div>
+                                    <div class="btnExcluir">🗑️</div>
+                                </div>
+                            </td>
+                        `;
+                    });
+
+                } catch (error) {
+                    console.error('Erro ao carregar produtos:', error);
+                }
+            })();
+
+        } else {
+            statusMessageDiv.textContent = 'Sessão inválida ou expirada. Redirecionando...';
+            logout();
+        }
+    } else {
+        statusMessageDiv.textContent = 'Nenhuma sessão encontrada. Redirecionando para login...';
+        setTimeout(() => window.location.href = 'index.html', 1500);
     }
-});
 
-         
-
-
-         
-        });//fecha window load
-
-
-
-
-
-
-
-
+    // Listener para logout
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logout);
+    }
+});// Fecha window.addEventListener('load')
 
