@@ -150,6 +150,7 @@ window.addEventListener('load', () => {
     
     if (storedToken) {
         const decodedPayload = jwtDecode(storedToken);
+        console.log("decodedPayload");
         if (decodedPayload) {
             updateUI(decodedPayload);
             verifyAndSaveUser(storedToken, true);
