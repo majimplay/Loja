@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             method: 'GET',
             mode: 'no-cors'
         });
-
+  console.log("gogoid2=",gogoid);
         const produtos = await response.json();
         const tabela = document.getElementById('Tabeladeprodutos');
 
