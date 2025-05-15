@@ -156,7 +156,8 @@ window.addEventListener('load', () => {
                                 nomeCell.width = '18%';
                                 //nomeCell.textContent = produto.NOME || 'Sem nome'<br>,`R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;;
                                  <textarea class="CAXADETEXTONOMEPRODUTO" rows="5" cols="30"></textarea><br>
-                                  <input class="CAXADETEXTOPRECOPRODUTO" >
+                                 <input   type="text"     class="CAXADETEXTOPRECOPRODUTO"  value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}"  placeholder="Preço">
+                              
                                 // Célula de Preço
                                 //const precoCell = newRow.insertCell(-1);
                                 //precoCell.width = '8%';
