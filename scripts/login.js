@@ -153,13 +153,14 @@ window.addEventListener('load', () => {
 
                                 // Célula de Nome
                                 const nomeCell = newRow.insertCell(-1);
-                                nomeCell.width = '10%';
-                                nomeCell.textContent = produto.NOME || 'Sem nome';
-
+                                nomeCell.width = '18%';
+                                //nomeCell.textContent = produto.NOME || 'Sem nome'<br>,`R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;;
+                                 <textarea class="CAXADETEXTONOMEPRODUTO" rows="5" cols="30"></textarea><br>
+                                  <input class="CAXADETEXTOPRECOPRODUTO" >
                                 // Célula de Preço
-                                const precoCell = newRow.insertCell(-1);
-                                precoCell.width = '8%';
-                                precoCell.textContent = `R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;
+                                //const precoCell = newRow.insertCell(-1);
+                                //precoCell.width = '8%';
+                                //precoCell.textContent = `R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;
 
                                 // Célula de Ações
                                 const acoesCell = newRow.insertCell(-1);
