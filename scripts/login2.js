@@ -76,7 +76,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   55555    - Evento load disparado");
+    console.log("teste   66666    - Evento load disparado");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -104,7 +104,7 @@
                   //  const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec'; // Substitua pela URL CORRETA do seu script implantado
                  //   const fetchUrl = `${scriptUrl}?action=getproductsbygoogleUserId&googleUserId=${encodeURIComponent(googleUserId)}`;
                     
-                       const googleUserId = window.decodedToken?.sub; ;
+                    //   const googleUserId = window.decodedToken?.sub; ;
                  console.log("googleUserId =(dentro do load):", googleUserId);
                        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
                         const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&googleUserId=${encodeURIComponent(googleUserId)}`;
