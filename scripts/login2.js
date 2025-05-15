@@ -76,7 +76,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   44444    - Evento load disparado");
+    console.log("teste   55555    - Evento load disparado");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -90,24 +90,24 @@
             // === Carregar Produtos APÓS validação do token ===
             (async () => {
                 try {
-                    const gogoid = window.decodedToken?.sub;
-                    console.log("gogoid3 (dentro do load):", gogoid);
+                    const googleUserId = window.decodedToken?.sub;
+                    console.log("googleUserId3 (dentro do load):", googleUserId);
 
-                    if (!gogoid) {
-                        console.error("GOGOID não encontrado!");
+                    if (!googleUserId) {
+                        console.error("googleUserId não encontrado!");
                         // Opcional: Exibir mensagem de erro na UI
-                        if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: GOGOID do usuário não encontrado.';
+                        if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: googleUserId do usuário não encontrado.';
                         return;
                     }
 
-                    // Usando GET para buscar produtos por GOGOID
+                    // Usando GET para buscar produtos por googleUserId
                   //  const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec'; // Substitua pela URL CORRETA do seu script implantado
-                 //   const fetchUrl = `${scriptUrl}?action=getproductsbygogoid&googleUserId=${encodeURIComponent(gogoid)}`;
+                 //   const fetchUrl = `${scriptUrl}?action=getproductsbygoogleUserId&googleUserId=${encodeURIComponent(googleUserId)}`;
                     
-                       const googleUserId = gogoid ;
+                       const googleUserId = window.decodedToken?.sub; ;
                  console.log("googleUserId =(dentro do load):", googleUserId);
                        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
-                        const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(googleUserId)}`;
+                        const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&googleUserId=${encodeURIComponent(googleUserId)}`;
                     const response = await fetch(fetchUrl);
                     console.log("Resposta do servidor:", response);
 
@@ -248,5 +248,5 @@
 });// Fecha window.addEventListener('load')
 
 // Note: As funções jwtDecode, updateUI, logout devem estar definidas globalmente ou acessíveis neste escopo.
-// Certifique-se de que a variável 'gogoid' está sendo corretamente obtida do token decodificado.
+// Certifique-se de que a variável 'googleUserId' está sendo corretamente obtida do token decodificado.
 // A função loadImagesIntoContainer e applyCarousel são esperadas de geprodutos.js
