@@ -76,7 +76,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   11111    - Evento load disparado");
+    console.log("teste   33333    - Evento load disparado");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -106,7 +106,7 @@
                     
                        const googleUserId = gogoid ;
                        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
-                        const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(gogoid)}`;
+                        const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(googleUserId)}`;
                     const response = await fetch(fetchUrl);
                     console.log("Resposta do servidor:", response);
 
