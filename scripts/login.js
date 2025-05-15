@@ -152,7 +152,7 @@ window.addEventListener('load', () => {
                                 imgCell.appendChild(imgContainer);
 
                                 // Célula de Nome
-                                const infoCell  = newRow.insertCell(-1);
+                                const nomeCell   = newRow.insertCell(-1);
                                 nomeCell.width = '18%';
                                infoCell.innerHTML = ` <textarea  class="CAXADETEXTONOMEPRODUTO"  rows="5"  cols="30" placeholder="Nome do Produto" >${produto.NOME || ''}</textarea>
                                <br> <input   type="text"  class="CAXADETEXTOPRECOPRODUTO"  value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}" placeholder="Preço" >`;
