@@ -72,7 +72,7 @@ function logout() {
 
 // --- Inicialização da Página ---
 window.addEventListener('load', () => {
-    console.log("Evento load disparado. teste 888888 Iniciando verificações...");
+    console.log("Evento load disparado. teste 999999 Iniciando verificações...");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
