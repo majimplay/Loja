@@ -154,11 +154,9 @@ window.addEventListener('load', () => {
                                 // Célula de Nome
                                 const nomeCell = newRow.insertCell(-1);
                                 nomeCell.width = '18%';
-                                //nomeCell.textContent = produto.NOME || 'Sem nome'<br>,`R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;;
-                                <textarea  class="CAXADETEXTONOMEPRODUTO"  rows="3"   placeholder="Nome do produto" >${produto.NOME || ''}</textarea>
-                                <br>
-                                <input   type="text"     class="CAXADETEXTOPRECOPRODUTO"  value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}"  placeholder="Preço">
-                              
+                               infoCell.innerHTML = ` <textarea  class="CAXADETEXTONOMEPRODUTO"  rows="5"  cols="30" placeholder="Nome do Produto" >${produto.NOME || ''}</textarea>
+    <br>
+    <input   type="text"  class="CAXADETEXTOPRECOPRODUTO"  value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}" placeholder="Preço" >`;
                                 // Célula de Preço
                                 //const precoCell = newRow.insertCell(-1);
                                 //precoCell.width = '8%';
