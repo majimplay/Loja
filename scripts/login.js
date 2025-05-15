@@ -72,7 +72,7 @@ function logout() {
 
 // --- Inicialização da Página ---
 window.addEventListener('load', () => {
-    console.log("Evento load disparado.   2222222 Iniciando verificações...");
+    console.log("Evento load disparado.   3333333 Iniciando verificações...");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -136,7 +136,7 @@ window.addEventListener('load', () => {
                                 const imgCell = newRow.insertCell(-1);
                                 imgCell.style.verticalAlign = 'top';
                                 imgCell.style.overflow = 'hidden';
-                                imgCell.Max-height = '332px';
+                                imgCell.style.maxHeight = '332px';
                                 imgCell.width = '74%'; // Ajuste a largura conforme necessário
                                 const imgContainer = document.createElement('div');
                                 imgContainer.classList.add('product-images-carousel');
