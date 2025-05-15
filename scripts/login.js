@@ -96,7 +96,7 @@ window.addEventListener('load', () => {
 
                     // Limpar tabela ANTES de fazer o fetch ou mostrar mensagem de erro de fetch
                     if (produtosTableBody) {
-                   //     while(produtosTableBody.rows.length > 1) {
+                        while(produtosTableBody.rows.length > 1) {
                             produtosTableBody.deleteRow(1);
                         }
                     } else {
