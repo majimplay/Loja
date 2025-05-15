@@ -72,7 +72,7 @@ function logout() {
 
 // --- Inicialização da Página ---
 window.addEventListener('load', () => {
-    console.log("Evento load disparado. teste 999999 Iniciando verificações...");
+    console.log("Evento load disparado. teste 11111111 Iniciando verificações...");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -119,7 +119,7 @@ window.addEventListener('load', () => {
                     // Limpar tabela antes de popular ou mostrar mensagem
                     if (produtosTableBody) {
                         while(produtosTableBody.rows.length > 0) {
-                            produtosTableBody.deleteRow(0);
+                      //      produtosTableBody.deleteRow(0);
                         }
                     } else {
                         console.error("Elemento tbody da tabela de produtos não encontrado!");
