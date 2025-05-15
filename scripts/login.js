@@ -72,7 +72,7 @@ function logout() {
 
 // --- Inicialização da Página ---
 window.addEventListener('load', () => {
-    console.log("Evento load disparado. teste 11111111 Iniciando verificações...");
+    console.log("Evento load disparado. Iniciando verificações...");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -94,6 +94,17 @@ window.addEventListener('load', () => {
                         return;
                     }
 
+                    // Limpar tabela ANTES de fazer o fetch ou mostrar mensagem de erro de fetch
+                    if (produtosTableBody) {
+                        while(produtosTableBody.rows.length > 0) {
+                            produtosTableBody.deleteRow(0);
+                        }
+                    } else {
+                        console.error("Elemento tbody da tabela de produtos não encontrado!");
+                        if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: Tabela de produtos não encontrada na página.';
+                        return;
+                    }
+
                     const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec'; // MANTENHA SUA URL CORRETA
                     const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(gogoid)}`;
                     console.log("Fazendo fetch para URL:", fetchUrl);
@@ -101,31 +112,16 @@ window.addEventListener('load', () => {
                     const response = await fetch(fetchUrl);
                     console.log("Resposta bruta do servidor (objeto Response):", response);
 
-                    // Ler o corpo da resposta como texto PRIMEIRO para depuração
                     const responseText = await response.text();
                     console.log("Texto bruto da resposta do servidor (antes do parse JSON):", responseText);
 
                     if (!response.ok) {
-                        // O responseText já foi lido, então ele contém a mensagem de erro do servidor
                         console.error(`Erro HTTP: ${response.status} - ${response.statusText}. Conteúdo: ${responseText}`);
                         throw new Error(`Erro HTTP: ${response.status} - ${responseText}`);
                     }
                     
-                    // Tentar parsear o texto que já foi lido
                     const produtosResponse = JSON.parse(responseText);
                     console.log("Resposta JSON parseada:", produtosResponse);
-
-
-                    // Limpar tabela antes de popular ou mostrar mensagem
-                    if (produtosTableBody) {
-                        while(produtosTableBody.rows.length > 0) {
-                      //      produtosTableBody.deleteRow(0);
-                        }
-                    } else {
-                        console.error("Elemento tbody da tabela de produtos não encontrado!");
-                        if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: Tabela de produtos não encontrada na página.';
-                        return;
-                    }
 
                     if (produtosResponse.status === 'success' && produtosResponse.data && produtosResponse.data.produtos) {
                         const produtos = produtosResponse.data.produtos;
@@ -134,13 +130,13 @@ window.addEventListener('load', () => {
 
                         if (produtos && produtos.length > 0) {
                             produtos.forEach(produto => {
-                                const newRow = produtosTableBody.insertRow(-1);
+                                const newRow = produtosTableBody.insertRow(-1); // Insere no final da tabela
 
                                 // Célula de Imagens
                                 const imgCell = newRow.insertCell(-1);
                                 imgCell.style.verticalAlign = 'top';
                                 imgCell.style.overflow = 'hidden';
-                                imgCell.width = '74%';
+                                imgCell.width = '74%'; // Ajuste a largura conforme necessário
                                 const imgContainer = document.createElement('div');
                                 imgContainer.classList.add('product-images-carousel');
                                 if (window.loadImagesIntoContainer && typeof produto.IMAGENS === 'string') {
@@ -151,19 +147,18 @@ window.addEventListener('load', () => {
                                 }
                                 imgCell.appendChild(imgContainer);
 
-                                // Célula de Nome
-                                const nomeCell = newRow.insertCell(-1);
-                                nomeCell.width = '10%';
-                                nomeCell.textContent = produto.NOME || 'Sem nome';
-
-                                // Célula de Preço
-                                const precoCell = newRow.insertCell(-1);
-                                precoCell.width = '8%';
-                                precoCell.textContent = `R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;
-
+                                // Célula de Nome e Preço (combinadas)
+                                const nomePrecoCell = newRow.insertCell(-1);
+                                nomePrecoCell.width = '18%'; // Ajuste a largura conforme necessário
+                                nomePrecoCell.style.verticalAlign = 'top'; // Alinha o conteúdo da célula ao topo
+                                nomePrecoCell.innerHTML = `
+                                    <textarea class="CAXADETEXTONOMEPRODUTO" rows="3" style="width: 95%; box-sizing: border-box; margin-bottom: 5px;" placeholder="Nome do Produto">${produto.NOME || ''}</textarea>
+                                    <input type="text" class="CAXADETEXTOPRECOPRODUTO" style="width: 95%; box-sizing: border-box;" value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}" placeholder="Preço">
+                                `;
+                                
                                 // Célula de Ações
                                 const acoesCell = newRow.insertCell(-1);
-                                acoesCell.width = '7%';
+                                acoesCell.width = '7%'; // Ajuste a largura conforme necessário
                                 acoesCell.style.verticalAlign = 'top';
                                 acoesCell.style.overflow = 'hidden';
                                 acoesCell.classList.add('acoes-container');
@@ -178,7 +173,7 @@ window.addEventListener('load', () => {
                              console.log("Nenhum produto encontrado para esta loja, embora a resposta tenha sido 'success'. Mensagem:", produtosResponse.message);
                              const newRow = produtosTableBody.insertRow(-1);
                              const noProductsCell = newRow.insertCell(-1);
-                             noProductsCell.colSpan = 4;
+                             noProductsCell.colSpan = 3; // Ajustado para 3 colunas
                              noProductsCell.style.textAlign = 'center';
                              noProductsCell.textContent = produtosResponse.message || 'Nenhum produto cadastrado para esta loja.';
                              if (statusMessageDiv) statusMessageDiv.textContent = produtosResponse.message || 'Nenhum produto cadastrado para esta loja.';
@@ -188,7 +183,7 @@ window.addEventListener('load', () => {
                         console.warn("Status não 'success' ou dados de produtos ausentes. Status:", produtosResponse.status, "Mensagem:", produtosResponse.message);
                         const newRow = produtosTableBody.insertRow(-1);
                         const messageCell = newRow.insertCell(-1);
-                        messageCell.colSpan = 4;
+                        messageCell.colSpan = 3; // Ajustado para 3 colunas
                         messageCell.style.textAlign = 'center';
                         messageCell.style.color = (produtosResponse.status === 'error' ? 'red' : 'orange');
                         messageCell.textContent = produtosResponse.message || 'Não foi possível carregar os produtos.';
@@ -197,11 +192,11 @@ window.addEventListener('load', () => {
 
                 } catch (error) {
                     console.error('Erro CRÍTICO ao carregar ou processar produtos:', error);
-                    if (produtosTableBody) { // Garante que tbody exista antes de tentar limpar
-                        while(produtosTableBody.rows.length > 0) { produtosTableBody.deleteRow(0); }
+                    // A tabela já foi limpa antes do try, então apenas adicionamos a mensagem de erro
+                    if (produtosTableBody) { // Garante que tbody exista
                         const newRow = produtosTableBody.insertRow(-1);
                         const errorCell = newRow.insertCell(-1);
-                        errorCell.colSpan = 4;
+                        errorCell.colSpan = 3; // Ajustado para 3 colunas
                         errorCell.style.textAlign = 'center';
                         errorCell.style.color = 'red';
                         errorCell.textContent = `Erro ao carregar produtos: ${error.message}`;
