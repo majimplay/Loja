@@ -118,9 +118,9 @@ window.addEventListener('load', () => {
 
                     // Limpar tabela antes de popular ou mostrar mensagem
                     if (produtosTableBody) {
-                        while(produtosTableBody.rows.length > 0) {
-                            produtosTableBody.deleteRow(0);
-                        }
+                     //   while(produtosTableBody.rows.length > 0) {
+                     //       produtosTableBody.deleteRow(0);
+                      //  }
                     } else {
                         console.error("Elemento tbody da tabela de produtos não encontrado!");
                         if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: Tabela de produtos não encontrada na página.';
