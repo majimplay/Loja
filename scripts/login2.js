@@ -76,7 +76,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   99999    - Evento load disparado");
+    console.log("teste   11111    - Evento load disparado");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
@@ -103,7 +103,8 @@
                     // Usando GET para buscar produtos por GOGOID
                   //  const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec'; // Substitua pela URL CORRETA do seu script implantado
                  //   const fetchUrl = `${scriptUrl}?action=getproductsbygogoid&googleUserId=${encodeURIComponent(gogoid)}`;
-                       const gogoid = e?.parameter?.googleUserId;
+                    
+                       const googleUserId = gogoid ;
                        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRjL-iQVhiVWSPeTyb4AEkYm4tSPeAsL0J6AHqS_S5CtY7iR6xY6lOk1KbN7vY_NnY/exec';
                         const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(gogoid)}`;
                     const response = await fetch(fetchUrl);
