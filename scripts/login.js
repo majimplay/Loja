@@ -118,9 +118,9 @@ window.addEventListener('load', () => {
 
                     // Limpar tabela antes de popular ou mostrar mensagem
                     if (produtosTableBody) {
-                     //   while(produtosTableBody.rows.length > 0) {
-                     //       produtosTableBody.deleteRow(0);
-                      //  }
+                        while(produtosTableBody.rows.length > 0) {
+                            produtosTableBody.deleteRow(0);
+                        }
                     } else {
                         console.error("Elemento tbody da tabela de produtos não encontrado!");
                         if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: Tabela de produtos não encontrada na página.';
@@ -152,14 +152,14 @@ window.addEventListener('load', () => {
                                 imgCell.appendChild(imgContainer);
 
                                 // Célula de Nome
-                                const nomeCell   = newRow.insertCell(-1);
-                                nomeCell.width = '18%';
-                               infoCell.innerHTML = ` <textarea  class="CAXADETEXTONOMEPRODUTO"  rows="5"  cols="30" placeholder="Nome do Produto" >${produto.NOME || ''}</textarea>
-                               <br> <input   type="text"  class="CAXADETEXTOPRECOPRODUTO"  value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}" placeholder="Preço" >`;
+                                const nomeCell = newRow.insertCell(-1);
+                                nomeCell.width = '10%';
+                                nomeCell.textContent = produto.NOME || 'Sem nome';
+
                                 // Célula de Preço
-                                //const precoCell = newRow.insertCell(-1);
-                                //precoCell.width = '8%';
-                                //precoCell.textContent = `R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;
+                                const precoCell = newRow.insertCell(-1);
+                                precoCell.width = '8%';
+                                precoCell.textContent = `R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}`;
 
                                 // Célula de Ações
                                 const acoesCell = newRow.insertCell(-1);
