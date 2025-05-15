@@ -76,7 +76,7 @@
 
         // --- Inicialização da Página ---
    window.addEventListener('load', () => {
-    console.log("teste   77777    - Evento load disparado");
+    console.log("teste   99999    - Evento load disparado");
 
     const storedToken = localStorage.getItem(USER_DATA_KEY);
 
