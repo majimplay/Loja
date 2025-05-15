@@ -168,10 +168,10 @@ window.addEventListener('load', () => {
                                 acoesCell.style.overflow = 'hidden';
                                 acoesCell.classList.add('acoes-container');
                                 acoesCell.innerHTML = `
-                                      <div class="btnMoverCima">🔺</div>
+                                      <div class="btnMoverCima">🔺<br></div>
                                       <div class="btnMoverBaixo">🔻</div>
-                                      <div class="btnEditar btnEditarProduto" data-product-id="${produto.ID_PRODUTO || ''}">✏️ Editar</div>
-                                      <div class="btnExcluir btnExcluirProduto" data-product-id="${produto.ID_PRODUTO || ''}">🗑️ Excluir</div>
+                                      <div class="btnEditar btnEditarProduto" data-product-id="${produto.ID_PRODUTO || ''}">✏️<br> </div>
+                                      <div class="btnExcluir btnExcluirProduto" data-product-id="${produto.ID_PRODUTO || ''}">🗑️ </div>
                                 `;
                             });
                         } else {
