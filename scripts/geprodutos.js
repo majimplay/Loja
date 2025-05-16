@@ -147,19 +147,19 @@ async function uploadImageToImgBB(imageData) {
 
     // Exemplo usando constantes (defina-as no topo do seu script ou em um arquivo de config separado)
     const IMGBB_API_KEY = '43ff22682bbe91ea89a32047a821bae8'; // ** Substitua pela sua chave API ImgBB **
-    const IMGBB_ALBUM_ID = '2SGYcL'; // ** Substitua pelo ID do seu álbum ImgBB **
+  //  const IMGBB_ALBUM_ID = '2SGYcL'; // ** Substitua pelo ID do seu álbum ImgBB **
 
     if (!IMGBB_API_KEY) {
         console.error("Chave da API ImgBB não configurada.");
         return null;
     }
-     if (IMGBB_ALBUM_ID) {
-         formData.append("album", IMGBB_ALBUM_ID);
-     }
+  //   if (IMGBB_ALBUM_ID) {
+   //      formData.append("album", IMGBB_ALBUM_ID);
+    // }
 
 
     try {
-        const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        const response = await fetch(`https://api.imgbb.com/1/2SGYcL/upload?key=${IMGBB_API_KEY}`, {
             method: 'POST',
             body: formData
         });
