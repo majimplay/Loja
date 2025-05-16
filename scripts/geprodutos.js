@@ -158,8 +158,8 @@ async function uploadImageToImgBB(imageData) {
     // }
 
 
-    try {
-        const response = await fetch(`https://api.imgbb.com/1/2SGYcL/upload?key=${IMGBB_API_KEY}`, {
+   
+        const response = await fetch(`https://api.imgbb.com/album/2SGYcL/upload?key=${IMGBB_API_KEY}`, {
             method: 'POST',
             body: formData
         });
