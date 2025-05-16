@@ -153,10 +153,10 @@ window.addEventListener('load', () => {
                                 nomePrecoCell.width = '18%'; // Ajuste a largura conforme necessário
                                 nomePrecoCell.style.verticalAlign = 'top'; // Alinha o conteúdo da célula ao topo
                                 nomePrecoCell.innerHTML = `
-                                    <textarea class="CAXADETEXTONOMEPRODUTO" rows="3" style="width: 95%; box-sizing: border-box; margin-bottom: 5px;" placeholder="Nome do Produto">${produto.NOME || ''}</textarea>
-                                    <input type="text" class="CAXADETEXTOPRECOPRODUTO" style="width: 95%; box-sizing: border-box;" value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}" placeholder="Preço">
+                                    <textarea class="CAXADETEXTONOMEPRODUTO" rows="3" placeholder="Nome do Produto" style="  margin-bottom: 5px; ">${produto.NOME || ''}</textarea>
+                                    <input type="text" class="CAXADETEXTOPRECOPRODUTO"  value="R$ ${parseFloat(produto.PRECO || 0).toFixed(2).replace('.', ',')}" placeholder="Preço">
                                 `;
-                                
+                      
                                 // Célula de Ações
                                 const acoesCell = newRow.insertCell(-1);
                                 acoesCell.width = '7%'; // Ajuste a largura conforme necessário
