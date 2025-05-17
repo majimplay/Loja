@@ -1,7 +1,7 @@
 
         // --- Constantes e Variáveis Globais Unificadas ---
         const USER_DATA_KEY = 'googleUserDataToken';
-        const STORE_DATA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4BYyPgFBnLL6aX2HhtARtDR_0uxQO-0m04j9C76s9XuvuQzTCOQKESMZK9pzpaNtE/exec'; // URL para salvar/buscar dados da loja
+        const STORE_DATA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXQ7QI0HoT0r_cqpApLeHadcn_C467waIMNYUBYNuLcjDxHHhZOmhaJKVa0_PP0oK3eA/exec'; // URL para salvar/buscar dados da loja
         const IMG_BB_API_KEY = '43ff22682bbe91ea89a32047a821bae8'; // Sua chave da API ImgBB
 
         let currentGoogleUserId = null;
