@@ -61,6 +61,7 @@ function updateUI(userData) {
 
 // --- Server Communication ---
 function verifyAndSaveUser(userData, isPageLoad = false) {
+    console.log("verifai and save user",userData);
     if (!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === 'SUA_NOVA_URL_DO_APP_SCRIPT_AQUI') {
         console.warn('URL do Google Apps Script não configurada');
         if (!isPageLoad) {
