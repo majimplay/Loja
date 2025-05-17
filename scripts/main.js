@@ -79,7 +79,12 @@ function verifyAndSaveUser(idToken, isPageLoad = false) {
         method: 'POST',
         mode: 'no-cors',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ id_token: idToken })
+        body: JSON.stringify({
+            id: userData.sub,    // Use 'sub' as the Google ID
+            name: userData.name,
+            email: userData.email,
+            picture: userData.picture
+        })
     })
     .then(() => {
         statusMessageDiv.textContent = isPageLoad 
