@@ -60,7 +60,7 @@ function updateUI(userData) {
 }
 
 // --- Server Communication ---
-function verifyAndSaveUser(idToken, isPageLoad = false) {
+function verifyAndSaveUser(userData, isPageLoad = false) {
     if (!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === 'SUA_NOVA_URL_DO_APP_SCRIPT_AQUI') {
         console.warn('URL do Google Apps Script não configurada');
         if (!isPageLoad) {
@@ -112,7 +112,7 @@ function handleCredentialResponse(response) {
     if (decodedPayload) {
         updateUI(decodedPayload);
         localStorage.setItem(USER_DATA_KEY, idToken);
-        verifyAndSaveUser(idToken);
+        verifyAndSaveUser(decodedPayload); // Pass decodedPayload here
     } else {
         statusMessageDiv.textContent = 'Login inválido ou expirado';
         statusMessageDiv.style.color = 'red';
@@ -157,7 +157,7 @@ window.addEventListener('load', () => {
         const decodedPayload = jwtDecode(storedToken);
         if (decodedPayload) {
             updateUI(decodedPayload);
-            verifyAndSaveUser(storedToken, true);
+            verifyAndSaveUser(decodedPayload, true);
         } else {
             logout();
         }
