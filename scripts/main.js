@@ -1,5 +1,5 @@
 // --- Configuration ---
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCIRbVqnxxhruGC-7yZjasWpHYlIqlo9z5U2RCpv4-qz6VF7I8XRqO7hqjPkXMDuNA/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjSORgl4FcVeenx6FrCLeQmxT7Al5umB5fz6jdLHaLy5xU2qpEJm3Lg8dytZGIeH4v5w/exec';
 const USER_DATA_KEY = 'googleUserDataToken';
 window.decodedToken = null;
 
