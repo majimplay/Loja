@@ -105,7 +105,7 @@ window.addEventListener('load', () => {
                         return;
                     }
 
-                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyjSORgl4FcVeenx6FrCLeQmxT7Al5umB5fz6jdLHaLy5xU2qpEJm3Lg8dytZGIeH4v5w/exec'; // MANTENHA SUA URL CORRETA
+                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbydDZlu7kDp2zFQC-zsxjVvoIYYp-dDMCp7L3yOr7gw3SNq3Dq7kH12iNSzc0kH72w5Bg/exec'; // MANTENHA SUA URL CORRETA
                     const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(gogoid)}`;
                     console.log("Fazendo fetch para URL:", fetchUrl);
 
