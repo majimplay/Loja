@@ -61,7 +61,6 @@ function updateUI(userData) {
 
 // --- Server Communication ---
 function verifyAndSaveUser(userData, isPageLoad = false) {
-    console.log("verifai and save user",userData);
     if (!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === 'SUA_NOVA_URL_DO_APP_SCRIPT_AQUI') {
         console.warn('URL do Google Apps Script não configurada');
         if (!isPageLoad) {
@@ -75,7 +74,12 @@ function verifyAndSaveUser(userData, isPageLoad = false) {
         ? 'Verificando sessão com o servidor...' 
         : 'Verificando autenticação e salvando dados...';
     statusMessageDiv.style.color = isPageLoad ? 'grey' : 'blue';
-
+console.log("Dados a serem enviados:", {
+        id: userData.sub,
+        name: userData.name,
+        email: userData.email,
+        picture: userData.picture
+    });
     fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
