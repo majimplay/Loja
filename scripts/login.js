@@ -104,8 +104,8 @@ window.addEventListener('load', () => {
                         if (statusMessageDiv) statusMessageDiv.textContent = 'Erro: Tabela de produtos não encontrada na página.';
                         return;
                     }
-
-                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbydDZlu7kDp2zFQC-zsxjVvoIYYp-dDMCp7L3yOr7gw3SNq3Dq7kH12iNSzc0kH72w5Bg/exec'; // MANTENHA SUA URL CORRETA
+                    //script produtosdaloja-------------------------------------------------------------------------------------
+                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbz-6kA0_chrisX0s-nfjiwLrKczxUrm5ri0JIsZu29wQYSjRV77QTqNnm6Kc1bOdQGCLQ/exec'; // MANTENHA SUA URL CORRETA
                     const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(gogoid)}`;
                     console.log("Fazendo fetch para URL:", fetchUrl);
 
