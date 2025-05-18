@@ -105,7 +105,8 @@ window.addEventListener('load', () => {
                         return;
                     }
                     //script produtosdaloja-------------------------------------------------------------------------------------
-                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyjSORgl4FcVeenx6FrCLeQmxT7Al5umB5fz6jdLHaLy5xU2qpEJm3Lg8dytZGIeH4v5w/exec'; // MANTENHA SUA URL CORRETA
+                                    
+                    const scriptUrl = 'https://script.google.com/macros/s/AKfycbz-6kA0_chrisX0s-nfjiwLrKczxUrm5ri0JIsZu29wQYSjRV77QTqNnm6Kc1bOdQGCLQ/exec'; // MANTENHA SUA URL CORRETA
                     const fetchUrl = `${scriptUrl}?action=getProdutosDaLoja&gogoid=${encodeURIComponent(gogoid)}`;
                     console.log("Fazendo fetch para URL:", fetchUrl);
 
